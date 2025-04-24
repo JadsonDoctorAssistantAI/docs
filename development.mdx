@@ -1,107 +1,51 @@
 ---
-title: 'Development'
-description: 'Preview changes locally to update your docs'
+title: 'Integrando'
+icon: 'code'
+description: 'Nessa seção você aprenderá a integrar a Doctor Assistant AI em sua aplicação.'
 ---
 
-<Info>
-  **Prerequisite**: Please install Node.js (version 19 or higher) before proceeding. <br />
-  Please upgrade to ```docs.json``` before proceeding and delete the legacy ```mint.json``` file.
-</Info>
+Existem duas formas de integrar a Doctor Assistant AI em sua aplicação:
 
-Follow these steps to install and run Mintlify on your operating system:
+<CardGroup cols={2}>
+  <Card title="APIs" icon="code">
+    Integre a Doctor Assistant AI utilizando nossas APIs REST para ter controle total sobre a experiência do usuário.
+  </Card>
+  <Card title="Web Components" icon="browser">
+    Utilize nossos componentes web prontos para uso e tenha uma integração rápida e simplificada.
+  </Card>
+</CardGroup>
 
-**Step 1**: Install Mintlify:
-
-<CodeGroup>
-
-  ```bash npm
-  npm i -g mintlify
-  ```
-
-```bash yarn
-yarn global add mintlify
-```
-
-</CodeGroup>
-
-**Step 2**: Navigate to the docs directory (where the `docs.json` file is located) and execute the following command:
-
-```bash
-mintlify dev
-```
-
-A local preview of your documentation will be available at `http://localhost:3000`.
-
-### Custom Ports
-
-By default, Mintlify uses port 3000. You can customize the port Mintlify runs on by using the `--port` flag. To run Mintlify on port 3333, for instance, use this command:
-
-```bash
-mintlify dev --port 3333
-```
-
-If you attempt to run Mintlify on a port that's already in use, it will use the next available port:
-
-```md
-Port 3000 is already in use. Trying 3001 instead.
-```
-
-## Mintlify Versions
-
-Please note that each CLI release is associated with a specific version of Mintlify. If your local website doesn't align with the production version, please update the CLI:
-
-<CodeGroup>
-
-```bash npm
-npm i -g mintlify@latest
-```
-
-```bash yarn
-yarn global upgrade mintlify
-```
-
-</CodeGroup>
-
-## Validating Links
-
-The CLI can assist with validating reference links made in your documentation. To identify any broken links, use the following command:
-
-```bash
-mintlify broken-links
-```
-
-## Deployment
-
-<Tip>
-  Unlimited editors available under the [Pro
-  Plan](https://mintlify.com/pricing) and above.
-</Tip>
-
-If the deployment is successful, you should see the following:
-
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Code Formatting
-
-We suggest using extensions on your IDE to recognize and format MDX. If you're a VSCode user, consider the [MDX VSCode extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for syntax highlighting, and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for code formatting.
-
-## Troubleshooting
+## Utilizando as APIs
 
 <AccordionGroup>
-  <Accordion title='Error: Could not load the "sharp" module using the darwin-arm64 runtime'>
+  <Accordion title="API de Consultas" icon="stethoscope">
+    A API de consultas permite que você envie consultas em áudio para a Doctor Assistant AI e receba sua transcrição, relatório estruturado
+    e até mesmo uma lista de medicamentos recomendados para uma prescrição. Essa API é ideal para integrar a Doctor Assistant AI em seu
+    sistema de prontuário eletrônico ou aplicativo de telemedicina.
 
-    This may be due to an outdated version of node. Try the following:
-    1. Remove the currently-installed version of mintlify: `npm remove -g mintlify`
-    2. Upgrade to Node v19 or higher.
-    3. Reinstall mintlify: `npm install -g mintlify`
+    <Link href="/apis/consultation/reference">Acessar referência</Link>
   </Accordion>
+  <Accordion title="API de Exames" icon="file-medical">
+    A API de exames permite que você envie arquivos de exames para a Doctor Assistant AI e receba um documento estruturado com todos os valores
+    encontrados no exame. Com ela você pode automatizar a extração de dados de exames laboratoriais e de imagem, facilitando o trabalho
+    dos profissionais de saúde.
 
-  <Accordion title="Issue: Encountering an unknown error">
-  
-    Solution: Go to the root of your device and delete the \~/.mintlify folder. Afterwards, run `mintlify dev` again.
+    <Link href="/apis/exams">Acessar referência</Link>
+  </Accordion>
+  <Accordion title="API de Resumos" icon="clipboard-list">
+    A API de resumos permite que você envie um histórico de consultas e receba um resumo detalhado de todas elas. Ideal para ter uma
+    visão consolidada do histórico do paciente e auxiliar na tomada de decisão clínica.
+
+    <Link href="/apis/summary">Acessar referência</Link>
   </Accordion>
 </AccordionGroup>
 
-Curious about what changed in the CLI version? [Check out the CLI changelog.](https://www.npmjs.com/package/mintlify?activeTab=versions)
+## Utilizando os Web Components
+
+<AccordionGroup>
+  <Accordion title="Consultation Recorder" icon="stethoscope">
+    O web component de consulta é um componente prontuário eletrônico que permite que você integre a Doctor Assistant AI em seu sistema de prontuário eletrônico.
+
+    <Link href="/web-components/consultation">Acessar referência</Link>
+  </Accordion>
+</AccordionGroup>

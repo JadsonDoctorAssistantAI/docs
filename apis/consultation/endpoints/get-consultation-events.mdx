@@ -1,0 +1,95 @@
+---
+title: 'Obter Eventos da Consulta'
+api: 'GET https://apim.doctorassistant.ai/api/sandbox/consultations/{consultationId}/events'
+description: 'Endpoint para obter o histórico de eventos de uma consulta específica'
+---
+
+## Autenticação
+
+<ParamField header="x-daai-api-key" type="string" required>
+  Chave de API para autenticação
+</ParamField>
+
+## Parâmetros da URL
+
+<ParamField path="consultationId" type="string" required>
+  ID da consulta
+</ParamField>
+
+## Resposta
+
+### Resposta de Sucesso
+
+<ResponseField name="status" type="integer">
+  200 - Sucesso
+</ResponseField>
+
+<ResponseField name="data" type="array">
+  <Expandable title="Toggle objeto">
+    <ResponseField name="id" type="string">
+      ID do evento
+    </ResponseField>
+    <ResponseField name="type" type="string">
+      Tipo do evento
+    </ResponseField>
+    <ResponseField name="status" type="string">
+      Status do evento
+    </ResponseField>
+    <ResponseField name="createdAt" type="string">
+      Data de criação do evento
+    </ResponseField>
+    <ResponseField name="metadata" type="object">
+      Metadados adicionais do evento
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Exemplo de Resposta
+
+```json
+{
+  "status": 200,
+  "data": [
+    {
+      "id": "event_123",
+      "type": "consultation_started",
+      "status": "completed",
+      "createdAt": "2024-03-25T10:30:00Z",
+      "metadata": {}
+    },
+    {
+      "id": "event_124",
+      "type": "chunk_uploaded",
+      "status": "completed",
+      "createdAt": "2024-03-25T10:35:00Z",
+      "metadata": {
+        "chunkIndex": 0,
+        "duration": 270
+      }
+    },
+    {
+      "id": "event_125",
+      "type": "consultation_finished",
+      "status": "completed",
+      "createdAt": "2024-03-25T11:00:00Z",
+      "metadata": {
+        "specialty": "generic"
+      }
+    }
+  ]
+}
+```
+
+### Códigos de Erro
+
+<ResponseField name="401" type="object">
+  Não autorizado - API Key inválida
+</ResponseField>
+
+<ResponseField name="404" type="object">
+  Consulta não encontrada
+</ResponseField>
+
+<ResponseField name="500" type="object">
+  Erro interno do servidor
+</ResponseField> 

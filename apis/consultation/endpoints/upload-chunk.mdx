@@ -1,0 +1,86 @@
+---
+title: 'Upload de Chunk'
+api: 'POST https://apim.doctorassistant.ai/api/sandbox/consultations/v2/{consultationId}/recordings/{recordingId}/chunks'
+description: 'Endpoint para fazer upload de um chunk de áudio da consulta'
+---
+
+## Autenticação
+
+<ParamField header="x-daai-api-key" type="string" required>
+  Chave de API para autenticação
+</ParamField>
+
+## Parâmetros da URL
+
+<ParamField path="consultationId" type="string" required>
+  ID da consulta
+</ParamField>
+
+<ParamField path="recordingId" type="string" required>
+  ID da gravação
+</ParamField>
+
+## Requisição
+
+### Form Data
+
+<ParamField body="recording" type="file" required>
+  Arquivo de áudio do chunk
+</ParamField>
+
+<ParamField body="duration" type="number" required>
+  Duração do chunk em segundos
+</ParamField>
+
+<ParamField body="chunkIndex" type="number" required>
+  Índice do chunk (começando em 0)
+</ParamField>
+
+### Exemplo de Requisição
+
+```bash
+curl -X POST \
+  'https://apim.doctorassistant.ai/api/sandbox/consultations/v2/{consultationId}/recordings/{recordingId}/chunks' \
+  -H 'x-daai-api-key: sua-api-key' \
+  -F 'recording=@/caminho/do/arquivo.weba' \
+  -F 'duration=270' \
+  -F 'chunkIndex=0'
+```
+
+## Resposta
+
+### Resposta de Sucesso
+
+<ResponseField name="status" type="integer">
+  200 - Sucesso
+</ResponseField>
+
+<ResponseField name="data" type="object">
+  <Expandable title="Toggle objeto">
+    <ResponseField name="chunkId" type="string">
+      ID do chunk enviado
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Códigos de Erro
+
+<ResponseField name="400" type="object">
+  Erro de validação dos dados enviados
+</ResponseField>
+
+<ResponseField name="401" type="object">
+  Não autorizado - API Key inválida
+</ResponseField>
+
+<ResponseField name="404" type="object">
+  Consulta ou gravação não encontrada
+</ResponseField>
+
+<ResponseField name="413" type="object">
+  Arquivo muito grande
+</ResponseField>
+
+<ResponseField name="500" type="object">
+  Erro interno do servidor
+</ResponseField> 

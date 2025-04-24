@@ -1,20 +1,20 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Doctor Assistant AI",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#009cb1",
+    "light": "#009cb1",
+    "dark": "#009cb1"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.ico",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentação",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Introdução",
             "pages": [
               "introduction",
               "quickstart",
@@ -22,58 +22,32 @@
             ]
           },
           {
-            "group": "Essentials",
+            "group": "Consultas",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
+              "apis/consultation/reference",
+              "apis/consultation/endpoints/start-consultation",
+              "apis/consultation/endpoints/upload-chunk",
+              "apis/consultation/endpoints/finish-consultation",
+              "apis/consultation/endpoints/get-consultation",
+              "apis/consultation/endpoints/get-consultation-events",
+              "apis/consultation/endpoints/get-specialties"
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "Exames",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "apis/exams"
+            ]
+          },
+          {
+            "group": "Resumos",
+            "pages": [
+              "apis/summary"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -83,20 +57,22 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "https://www.doctorassistant.ai/prontuario/#contato"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://backoffice.doctorassistant.ai"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "youtube": "https://youtube.com/doctorassistantai",
+      "discord": "https://discord.gg/doctorassistantai",
+      "github": "https://github.com/doctorassistantai",
+      "linkedin": "https://linkedin.com/company/doctorassistant-ai",
+      "instagram": "https://instagram.com/doctorassistant.ai"
     }
   }
 }

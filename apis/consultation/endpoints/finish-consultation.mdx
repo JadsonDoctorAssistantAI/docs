@@ -1,0 +1,71 @@
+---
+title: 'Finalizar Consulta'
+api: 'POST https://apim.doctorassistant.ai/api/sandbox/consultations/v2/{consultationId}/recordings/{recordingId}/finish'
+description: 'Endpoint para finalizar uma consulta e iniciar o processamento'
+---
+
+## Autenticação
+
+<ParamField header="x-daai-api-key" type="string" required>
+  Chave de API para autenticação
+</ParamField>
+
+## Parâmetros da URL
+
+<ParamField path="consultationId" type="string" required>
+  ID da consulta
+</ParamField>
+
+<ParamField path="recordingId" type="string" required>
+  ID da gravação
+</ParamField>
+
+## Requisição
+
+### Body
+
+<ParamField body="specialty" type="string" required>
+  Especialidade médica da consulta (ex: "generic")
+</ParamField>
+
+### Exemplo de Requisição
+
+```json
+{
+    "specialty": "generic"
+}
+```
+
+## Resposta
+
+### Resposta de Sucesso
+
+<ResponseField name="status" type="integer">
+  200 - Sucesso
+</ResponseField>
+
+<ResponseField name="data" type="object">
+  <Expandable title="Toggle objeto">
+    <ResponseField name="status" type="string">
+      Status do processamento
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Códigos de Erro
+
+<ResponseField name="400" type="object">
+  Erro de validação dos dados enviados
+</ResponseField>
+
+<ResponseField name="401" type="object">
+  Não autorizado - API Key inválida
+</ResponseField>
+
+<ResponseField name="404" type="object">
+  Consulta ou gravação não encontrada
+</ResponseField>
+
+<ResponseField name="500" type="object">
+  Erro interno do servidor
+</ResponseField> 

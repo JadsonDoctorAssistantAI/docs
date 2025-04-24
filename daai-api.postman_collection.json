@@ -1,0 +1,310 @@
+{
+	"info": {
+		"_postman_id": "3dd8bb09-2884-4666-a89e-8a59fd39a186",
+		"name": "DAAI - APIS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37155788",
+		"_collection_link": "https://daai-integration-team.postman.co/workspace/Daai-Integration-Team-Workspace~977fcda3-1946-4076-8d6c-e01fee653a2f/collection/37155788-3dd8bb09-2884-4666-a89e-8a59fd39a186?action=share&source=collection_link&creator=37155788"
+	},
+	"item": [
+		{
+			"name": "Consultations",
+			"item": [
+				{
+					"name": "Process Chunked Consultation",
+					"item": [
+						{
+							"name": "01 - start consultation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-daai-api-key",
+										"value": "{{DAAI_API_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"professionalId\": \"professional_id\",\n    \"metadata\": {},\n    \"reason\": \"\",\n    \"notes\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{DAAI_URL}}/consultations/v2",
+									"host": [
+										"{{DAAI_URL}}"
+									],
+									"path": [
+										"consultations",
+										"v2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02 - upload chunk",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-daai-api-key",
+										"value": "{{DAAI_API_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "recording",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "duration",
+											"value": "270",
+											"type": "text"
+										},
+										{
+											"key": "chunkIndex",
+											"value": "0",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{DAAI_URL}}/consultations/v2/{{DAAI_CONSULTATION_ID}}/recordings/{{DAAI_RECORDING_ID}}/chunks",
+									"host": [
+										"{{DAAI_URL}}"
+									],
+									"path": [
+										"consultations",
+										"v2",
+										"{{DAAI_CONSULTATION_ID}}",
+										"recordings",
+										"{{DAAI_RECORDING_ID}}",
+										"chunks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03 - finish consultation Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-daai-api-key",
+										"value": "{{DAAI_API_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"specialty\": \"generic\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{DAAI_URL}}/consultations/v2/{{DAAI_CONSULTATION_ID}}/recordings/{{DAAI_RECORDING_ID}}/finish",
+									"host": [
+										"{{DAAI_URL}}"
+									],
+									"path": [
+										"consultations",
+										"v2",
+										"{{DAAI_CONSULTATION_ID}}",
+										"recordings",
+										"{{DAAI_RECORDING_ID}}",
+										"finish"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "get specialties",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{DAAI_URL}}/specialties",
+							"host": [
+								"{{DAAI_URL}}"
+							],
+							"path": [
+								"specialties"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get consultation",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-daai-api-key",
+								"value": "afe16d81-8037-4228-9f3e-4f422ba804cf",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "recording",
+									"type": "file",
+									"src": "/Users/jadsondaai/Downloads/consultation-example.weba"
+								},
+								{
+									"key": "specialty",
+									"value": "psychiatry",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "notes",
+									"value": "dn 19/10/1975 # AMBULATÓRIO DE NEFROLOGIA (20/08/24) ENCAMINHADO PÓS ALTA # INTERNAÇÃO NO HCAAJ 01-03/08/24 CATE (02/08/24) SEM LESÕES OBSTRUTIVAS - TRATAMENTO CLÍNICO # ANTROPOLOGIA PROCEDÊNCIA: DOMICÍLIO (SÃO JOSÉ DA LAJE-AL) # ANTECEDENTES HIPERTENSÃO > 15 ANOS DIABETES > 15 ANOS DRC NÃO DIALITICO # MEDICAÇÕES ENALAPRIL 5 MG 2X CARVEDILOL 12,5 MG 2X ESPIRONOLACTONA 25 MG 1X DAPAGLIFLOZINA 10 MG 1X INSULINA NPH (35 - 0 - 15UI) # EXAMES DE IMAGEM - ECOTT (23/04/2024): FE: 50,13%. DISFUNÇÃO SISTÓLICA LEVE DO VE. DISFUNÇÃO DIASTÓLICA DO VE TIPO III. - CATETERISMO CARDÍACO (01/08/24): 1. ATEROMATOSE CORONARIANA NÃO OBSTRUTIVA. - USG (07/08/24 DR EMMANUEL CRM AL 6730) RD 11,5 X 4,9 X 5,4 RE 12,1 X 5,9 X 5,0 LEVE ALTERAÇÃO TEXTURAL # EXAMES LABORATORIAIS - LAB (08/07/24): CR: 2,62, UR: 81, ÁCIDO ÚRICO: 9,94. - LAB (09/07/24): CR: 2,2 HB: 12,9, LEUCO: 6500, PQ: 301K, GLI: 182, K: 4,9, UR: 83 - LAB (06/08/24): CR 2,5 HB 12,5 VCM 84 LT 8400 PQ 314K NA 142 K 4,8 UR 98 CA 10 PCR 96 P 5,7 # CALCULADORAS DE RISCO EGFR CKD-EPI(08/07/24): 29 ML/MIN/1.73 M² EGFR CKD-EPI(06/08/24): 31 ML/MIN/1.73 M² eGFR CKD-EPI (20/11/24): 40 mL/min/1.73 m² # CONSIDERAÇÕES E CONDUTA EXAMES DE ESTADIAMENTO DRC INICIO SUPLEMENTAÇÃO DRC",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "reason",
+									"value": "reason",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{DAAI_URL}}/consultations/{{DAAI_CONSULTATION_ID}}",
+							"host": [
+								"{{DAAI_URL}}"
+							],
+							"path": [
+								"consultations",
+								"{{DAAI_CONSULTATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events consultation",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-daai-api-key",
+								"value": "afe16d81-8037-4228-9f3e-4f422ba804cf",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "recording",
+									"type": "file",
+									"src": "/Users/jadsondaai/Downloads/consultation-example.weba"
+								},
+								{
+									"key": "specialty",
+									"value": "psychiatry",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "notes",
+									"value": "dn 19/10/1975 # AMBULATÓRIO DE NEFROLOGIA (20/08/24) ENCAMINHADO PÓS ALTA # INTERNAÇÃO NO HCAAJ 01-03/08/24 CATE (02/08/24) SEM LESÕES OBSTRUTIVAS - TRATAMENTO CLÍNICO # ANTROPOLOGIA PROCEDÊNCIA: DOMICÍLIO (SÃO JOSÉ DA LAJE-AL) # ANTECEDENTES HIPERTENSÃO > 15 ANOS DIABETES > 15 ANOS DRC NÃO DIALITICO # MEDICAÇÕES ENALAPRIL 5 MG 2X CARVEDILOL 12,5 MG 2X ESPIRONOLACTONA 25 MG 1X DAPAGLIFLOZINA 10 MG 1X INSULINA NPH (35 - 0 - 15UI) # EXAMES DE IMAGEM - ECOTT (23/04/2024): FE: 50,13%. DISFUNÇÃO SISTÓLICA LEVE DO VE. DISFUNÇÃO DIASTÓLICA DO VE TIPO III. - CATETERISMO CARDÍACO (01/08/24): 1. ATEROMATOSE CORONARIANA NÃO OBSTRUTIVA. - USG (07/08/24 DR EMMANUEL CRM AL 6730) RD 11,5 X 4,9 X 5,4 RE 12,1 X 5,9 X 5,0 LEVE ALTERAÇÃO TEXTURAL # EXAMES LABORATORIAIS - LAB (08/07/24): CR: 2,62, UR: 81, ÁCIDO ÚRICO: 9,94. - LAB (09/07/24): CR: 2,2 HB: 12,9, LEUCO: 6500, PQ: 301K, GLI: 182, K: 4,9, UR: 83 - LAB (06/08/24): CR 2,5 HB 12,5 VCM 84 LT 8400 PQ 314K NA 142 K 4,8 UR 98 CA 10 PCR 96 P 5,7 # CALCULADORAS DE RISCO EGFR CKD-EPI(08/07/24): 29 ML/MIN/1.73 M² EGFR CKD-EPI(06/08/24): 31 ML/MIN/1.73 M² eGFR CKD-EPI (20/11/24): 40 mL/min/1.73 m² # CONSIDERAÇÕES E CONDUTA EXAMES DE ESTADIAMENTO DRC INICIO SUPLEMENTAÇÃO DRC",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "reason",
+									"value": "reason",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{DAAI_URL}}/consultations/{{DAAI_CONSULTATION_ID}}/events",
+							"host": [
+								"{{DAAI_URL}}"
+							],
+							"path": [
+								"consultations",
+								"{{DAAI_CONSULTATION_ID}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

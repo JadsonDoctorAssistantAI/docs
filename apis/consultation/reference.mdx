@@ -1,0 +1,64 @@
+---
+title: 'Referência'
+icon: 'book-open'
+description: 'Gerencie as consultas médicas, da sua criação até escutar seus eventos.'
+---
+
+## Ambientes
+
+A API está disponível em dois ambientes:
+
+- **Sandbox**: `https://apim.doctorassistant.ai/api/sandbox`
+- **Produção**: `https://apim.doctorassistant.ai/api/production`
+
+## Autenticação
+
+Todas as requisições à API devem incluir a chave de API no header `x-daai-api-key`. Esta chave é única para cada cliente e deve ser mantida em segurança.
+
+```bash
+curl -H "x-daai-api-key: sua-chave-api" https://apim.doctorassistant.ai/api/sandbox/consultations/v2
+```
+
+## Endpoints Disponíveis
+
+### Consultas
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| POST | `/consultations/v2` | Iniciar uma nova consulta |
+| POST | `/consultations/v2/{consultationId}/recordings/{recordingId}/chunks` | Upload de chunk de áudio |
+| POST | `/consultations/v2/{consultationId}/recordings/{recordingId}/finish` | Finalizar consulta |
+| GET | `/consultations/{consultationId}` | Obter detalhes da consulta |
+| GET | `/consultations/{consultationId}/events` | Obter eventos da consulta |
+
+### Especialidades
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | `/specialties` | Listar especialidades disponíveis |
+
+## Fluxo de Uso
+
+1. **Iniciar Consulta**: Use o endpoint `POST /consultations/v2` para criar uma nova consulta
+2. **Upload de Áudio**: Envie os chunks de áudio usando `POST /consultations/v2/{consultationId}/recordings/{recordingId}/chunks`
+3. **Finalizar Consulta**: Finalize a consulta com `POST /consultations/v2/{consultationId}/recordings/{recordingId}/finish`
+4. **Acompanhar Eventos**: Monitore os eventos da consulta usando `GET /consultations/{consultationId}/events`
+
+## Códigos de Erro Comuns
+
+| Código | Descrição |
+|--------|-----------|
+| 400 | Erro de validação dos dados enviados |
+| 401 | Não autorizado - API Key inválida |
+| 404 | Recurso não encontrado |
+| 413 | Arquivo muito grande (para upload de chunks) |
+| 500 | Erro interno do servidor |
+
+## Boas Práticas
+
+1. **Ambiente de Testes**: Sempre teste suas integrações no ambiente de sandbox antes de usar em produção
+2. **Tratamento de Erros**: Implemente tratamento adequado para todos os códigos de erro possíveis
+3. **Chunks de Áudio**: Ao enviar chunks de áudio, mantenha um tamanho consistente e envie na ordem correta
+4. **Monitoramento**: Acompanhe os eventos da consulta para garantir o processamento correto
+5. **Segurança**: Nunca exponha sua chave de API no código do cliente ou em logs
+
