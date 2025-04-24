@@ -22,27 +22,13 @@
             ]
           },
           {
-            "group": "Consultas",
-            "pages": [
-              "apis/consultation/reference",
-              "apis/consultation/endpoints/start-consultation",
-              "apis/consultation/endpoints/upload-chunk",
-              "apis/consultation/endpoints/finish-consultation",
-              "apis/consultation/endpoints/get-consultation",
-              "apis/consultation/endpoints/get-consultation-events",
-              "apis/consultation/endpoints/get-specialties"
-            ]
+            "group": "Referência da API",
+            "openapi": "openapi.yaml"
           },
           {
-            "group": "Exames",
+            "group": "Web Components",
             "pages": [
-              "apis/exams"
-            ]
-          },
-          {
-            "group": "Resumos",
-            "pages": [
-              "apis/summary"
+              "web-components/consultation-recorder"
             ]
           }
         ]
@@ -56,7 +42,7 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
+        "label": "Suporte",
         "href": "https://www.doctorassistant.ai/prontuario/#contato"
       }
     ],
