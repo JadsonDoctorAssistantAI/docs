@@ -761,3 +761,45 @@ paths:
                   - message
                   - error
                   - statusCode
+  /exams:
+    post:
+      tags:
+        - Exams
+      summary: Processar exame [Em Breve]
+      description: |
+        <Warning>
+        🚧 Esta API está atualmente em desenvolvimento e estará disponível em breve.
+        Ela permitirá o gerenciamento e análise de exames médicos.
+        </Warning>
+      responses:
+        "200":
+          description: Em desenvolvimento
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: API em desenvolvimento
+  /summaries:
+    post:
+      tags:
+        - Summaries
+      summary: Sumarização de Documentos [Em Breve]
+      description: |
+        <Warning>
+        🚧 Esta API está atualmente em desenvolvimento e estará disponível em breve.
+        Ela permitirá a geração de sumários inteligentes de documentos médicos.
+        </Warning>
+      responses:
+        "200":
+          description: Em desenvolvimento
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: API em desenvolvimento
