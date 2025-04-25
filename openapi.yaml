@@ -351,6 +351,134 @@ paths:
                   - message
                   - error
                   - statusCode
+  /consultations:
+    post:
+      tags:
+        - Consultations
+      summary: Criar consulta em um único passo
+      description: |
+        <Warning>
+        Ao utilizar esse endpoint, o tempo de resposta pode ser maior, pois o áudio é processado em um único passo.
+        </Warning>
+
+        Cria uma nova consulta médica com o áudio em um único passo, sem necessidade de enviar chunks separadamente.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                recording:
+                  type: string
+                  format: binary
+                  description: Arquivo de áudio da consulta
+                specialty:
+                  type: string
+                  description: Especialidade da consulta. Se não informada, será considerada como 'generic'
+                  default: generic
+                  example: generic
+                notes:
+                  type: string
+                  description: Anotações adicionais
+                  example: ""
+                reason:
+                  type: string
+                  description: Motivo da consulta
+                  example: ""
+                professionalId:
+                  type: string
+                  description: ID do profissional
+                  example: "123456"
+                metadata:
+                  type: object
+                  description: Metadados adicionais da consulta
+                  example: { "patient_id": "123456", "attendance_id": "123456" }
+              required:
+                - recording
+                - professionalId
+      responses:
+        "201":
+          description: Consulta criada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID da consulta
+                    example: s0q0ud3fi1d9kcwjrt8vs50n
+                  transcription:
+                    type: string
+                    description: Transcrição da consulta
+                    example: ""
+                  recording:
+                    type: object
+                    description: Informações da gravação
+                    example: {}
+                  report:
+                    type: object
+                    description: Relatório da consulta
+                    properties:
+                      specialty:
+                        type: string
+                        description: Especialidade da consulta
+                        example: generic
+                      content:
+                        type: object
+                        description: Conteúdo do relatório
+                        example: {}
+                  metadata:
+                    type: object
+                    description: Metadados da consulta
+                    example: {}
+                required:
+                  - id
+                  - transcription
+                  - recording
+                  - report
+                  - metadata
+        "422":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: array
+                    description: Lista de mensagens de erro de validação
+                    items:
+                      type: string
+                    example: ["recording is required"]
+                  error:
+                    type: string
+                    description: Tipo do erro
+                    example: "Unprocessable Entity"
+                  statusCode:
+                    type: integer
+                    description: Código do status HTTP
+                    example: 422
+                required:
+                  - message
+                  - error
+                  - statusCode
+        "401":
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+                  statusCode:
+                    type: integer
+                    example: 401
+                required:
+                  - message
+                  - statusCode
   /specialties:
     get:
       tags:
