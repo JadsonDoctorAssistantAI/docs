@@ -94,6 +94,7 @@ import '@doctorassistant/daai-component';
 | `hideTutorial` | boolean | Desativa o modal de tutorial da telemedicina |
 | `maxRecordingTime` | number | Tempo máximo de gravação em segundos |
 | `warningRecordingTime` | number | Tempo em segundos antes do limite para aviso |
+| `reportSchema` | object | Esquema customizado do relatório, conforme especificação da API. Permite definir instruções, schema e exemplos para o relatório gerado. |
 
 ## Eventos
 
@@ -247,3 +248,36 @@ Para configurar limites de tempo de gravação:
 />
 ```
 
+## Esquema customizado do relatório
+
+Você pode customizar o relatório gerado pelo componente utilizando a propriedade `report-schema`. Isso permite definir instruções, um schema e exemplos para o relatório, tornando a geração do conteúdo mais flexível e adaptada à sua necessidade.
+
+> **Dica:** É possível testar e validar a configuração do relatório customizado diretamente no backoffice, na aba de transformação nas configurações da aplicação. Assim, você pode experimentar diferentes schemas e exemplos antes de aplicar em produção.
+
+- O campo `schema` deve ser um **JSON Schema válido**, conforme a [especificação oficial](https://json-schema.org/specification). Isso garante que o relatório gerado siga a estrutura esperada.
+- O campo `fewShots` deve conter exemplos que **satisfazem o schema definido**. Dessa forma, os exemplos servem como referência para o preenchimento correto do relatório.
+
+Por exemplo:
+
+```javascript
+<daai-consultation-recorder
+  apikey="SUA_API_KEY"
+  professional="ID_DO_PROFISSIONAL"
+  report-schema='{
+    "instructions": "O relatório deve ser escrito em português brasileiro...",
+    "schema": {
+      "type": "object",
+      "required": ["foo", "bar"],
+      "properties": {
+        "foo": { "type": "integer" },
+        "bar": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "fewShots": [
+      {"foo":1,"bar":"test"},
+      {"foo":2,"bar":"test2"}
+    ]
+  }'
+/>
+```

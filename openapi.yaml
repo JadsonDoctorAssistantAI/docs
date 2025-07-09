@@ -120,8 +120,8 @@ paths:
                   - message
                   - error
                   - statusCode
-  ? /consultations/v2/{DAAI_CONSULTATION_ID}/recordings/{DAAI_RECORDING_ID}/chunks
-  : post:
+  /consultations/v2/{DAAI_CONSULTATION_ID}/recordings/{DAAI_RECORDING_ID}/chunks:
+    post:
       tags:
         - Consultations
       summary: Enviar chunk de áudio
@@ -217,8 +217,8 @@ paths:
                   - message
                   - error
                   - statusCode
-  ? /consultations/v2/{DAAI_CONSULTATION_ID}/recordings/{DAAI_RECORDING_ID}/finish
-  : post:
+  /consultations/v2/{DAAI_CONSULTATION_ID}/recordings/{DAAI_RECORDING_ID}/finish:
+    post:
       tags:
         - Consultations
       summary: Finalizar consulta
@@ -234,6 +234,48 @@ paths:
                   description: Especialidade da consulta. Se não informada, será considerada como 'generic'
                   default: generic
                   example: generic
+                reportSchema:
+                  type: object
+                  description: |
+                    Esquema do relatório. Se não informado, será considerado o esquema padrão da especialidade ou o configurado globalmente.
+
+                    - O campo `schema` deve ser um **JSON Schema válido**, conforme a [especificação oficial](https://json-schema.org/specification). Isso garante que o relatório gerado siga a estrutura esperada.
+                    - O campo `fewShots` deve conter exemplos que **satisfazem o schema definido**.
+
+                    > **Dica:** É possível testar e validar a configuração do relatório customizado diretamente no backoffice, na aba de transformação nas configurações da aplicação. Assim, você pode experimentar diferentes schemas e exemplos antes de aplicar em produção.
+                  properties:
+                    instructions:
+                      type: string
+                      description: Instruções para geração do relatório
+                      example: O relatório deve ser escrito em português brasileiro e deve conter as informações do paciente, da consulta e do diagnóstico.
+                    schema:
+                      type: object
+                      description: Schema JSON do conteúdo do relatório
+                      properties:
+                        type:
+                          type: string
+                          example: object
+                        required:
+                          type: array
+                          items:
+                            type: string
+                        properties:
+                          type: object
+                          additionalProperties: true
+                        additionalProperties:
+                          type: boolean
+                      required:
+                        - type
+                        - required
+                        - properties
+                        - additionalProperties
+                    fewShots:
+                      type: string
+                      description: Exemplos de preenchimento do relatório em formato JSON string
+                      example: '[{"foo":1,"bar":"test"},{"foo":2,"bar":"test2"}]'
+                  required:
+                    - instructions
+                    - schema
       parameters:
         - name: DAAI_CONSULTATION_ID
           in: path
