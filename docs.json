@@ -70,6 +70,24 @@
             "openapi": "docs/en/openapi.yaml"
           }
         ]
+      },
+      {
+        "language": "es",
+        "groups": [
+          {
+            "group": "Primeros Pasos",
+            "pages": [
+              "docs/es/introduction",
+              "docs/es/quickstart",
+              "docs/es/development",
+              "docs/es/web-components/consultation-recorder"
+            ]
+          },
+          {
+            "group": "Referencia de API",
+            "openapi": "docs/es/openapi.yaml"
+          }
+        ]
       }
     ]
   },
