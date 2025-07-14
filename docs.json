@@ -9,31 +9,6 @@
   },
   "favicon": "/favicon.ico",
   "navigation": {
-    "tabs": [
-      {
-        "tab": "Documentação",
-        "groups": [
-          {
-            "group": "Introdução",
-            "pages": [
-              "introduction",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Referência da API",
-            "openapi": "openapi.yaml"
-          },
-          {
-            "group": "Web Components",
-            "pages": [
-              "web-components/consultation-recorder"
-            ]
-          }
-        ]
-      }
-    ],
     "languages": [
       {
         "language": "pt-BR",
