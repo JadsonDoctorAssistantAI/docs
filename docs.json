@@ -33,6 +33,62 @@
           }
         ]
       }
+    ],
+    "languages": [
+      {
+        "language": "pt-BR",
+        "groups": [
+          {
+            "group": "Primeiros Passos",
+            "pages": [
+              "docs/pt-br/introduction",
+              "docs/pt-br/quickstart",
+              "docs/pt-br/development",
+              "docs/pt-br/web-components/consultation-recorder"
+            ]
+          },
+          {
+            "group": "Referência da API",
+            "openapi": "docs/pt-br/openapi.yaml"
+          }
+        ]
+      },
+      {
+        "language": "en",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "docs/en/introduction",
+              "docs/en/quickstart",
+              "docs/en/development",
+              "docs/en/web-components/consultation-recorder"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "openapi": "docs/en/openapi.yaml"
+          }
+        ]
+      },
+      {
+        "language": "es",
+        "groups": [
+          {
+            "group": "Primeros Pasos",
+            "pages": [
+              "docs/es/introduction",
+              "docs/es/quickstart",
+              "docs/es/development",
+              "docs/es/web-components/consultation-recorder"
+            ]
+          },
+          {
+            "group": "Referencia de API",
+            "openapi": "docs/es/openapi.yaml"
+          }
+        ]
+      }
     ]
   },
   "logo": {

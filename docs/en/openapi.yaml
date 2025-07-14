@@ -1,0 +1,847 @@
+openapi: 3.1.0
+info:
+  title: DAAI - APIS
+  version: 1.0.0
+servers:
+  - url: https://apim.doctorassistant.ai/api/sandbox
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-daai-api-key
+      description: API key for authentication
+security:
+  - ApiKeyAuth: []
+tags:
+  - name: Consultations
+  - name: Exams
+  - name: Summaries
+paths:
+  /consultations/v2:
+    post:
+      tags:
+        - Consultations
+      summary: Start consultation
+      description: Starts a new medical consultation. Returns the necessary IDs to send audio chunks.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                professionalId:
+                  type: string
+                  description: Professional ID
+                  example: 123456
+                metadata:
+                  type: object
+                  description: Additional consultation metadata
+                  example: { "patient_id": "123456", "attendance_id": "123456" }
+                reason:
+                  type: string
+                  description: Consultation reason
+                  example: ""
+                notes:
+                  type: string
+                  description: Additional notes
+                  example: ""
+              required:
+                - professionalId
+      responses:
+        "201":
+          description: Consultation created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Consultation ID
+                    example: d3rqusph8u84z5n5d0ktbdjo
+                  transcription:
+                    type: string
+                    description: Consultation transcription
+                    example: ""
+                  recording:
+                    type: object
+                    description: Recording information
+                    properties:
+                      id:
+                        type: string
+                        description: Recording ID
+                        example: xg9nwsq70bu2hjdxz7fq1q4w
+                  report:
+                    type: object
+                    description: Consultation report
+                    example: {}
+                required:
+                  - id
+                  - recording
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+                  statusCode:
+                    type: integer
+                    example: 401
+                required:
+                  - message
+                  - statusCode
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: array
+                    description: List of validation error messages
+                    items:
+                      type: string
+                    example: ["metadata must be an object"]
+                  error:
+                    type: string
+                    description: Error type
+                    example: "Unprocessable Entity"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 422
+                required:
+                  - message
+                  - error
+                  - statusCode
+  /consultations/v2/{DAAI_CONSULTATION_ID}/recordings/{DAAI_RECORDING_ID}/chunks:
+    post:
+      tags:
+        - Consultations
+      summary: Send audio chunk
+      description: Sends an audio chunk from the consultation. Chunks must be sent in sequential order using the chunkIndex parameter.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                recording:
+                  type: string
+                  format: binary
+                duration:
+                  type: integer
+                  example: "270"
+                chunkIndex:
+                  type: integer
+                  example: "0"
+      parameters:
+        - name: DAAI_CONSULTATION_ID
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: DAAI_RECORDING_ID
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "201":
+          description: Chunk sent successfully
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Recording is required"
+                  error:
+                    type: string
+                    description: Error type
+                    example: "Bad Request"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 400
+                required:
+                  - message
+                  - error
+                  - statusCode
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+                  statusCode:
+                    type: integer
+                    example: 401
+                required:
+                  - message
+                  - statusCode
+        "404":
+          description: Consultation not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: Consultation not found
+                  error:
+                    type: string
+                    description: Error type
+                    example: Not Found
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 404
+                required:
+                  - message
+                  - error
+                  - statusCode
+  /consultations/v2/{DAAI_CONSULTATION_ID}/recordings/{DAAI_RECORDING_ID}/finish:
+    post:
+      tags:
+        - Consultations
+      summary: Finish consultation
+      description: Finishes the consultation and starts audio processing. The specialty can be specified to determine the report template.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                specialty:
+                  type: string
+                  description: Consultation specialty. If not provided, will be considered as 'generic'
+                  default: generic
+                  example: generic
+                reportSchema:
+                  type: object
+                  description: |
+                    Report schema. If not provided, will be considered the default schema of the specialty or the globally configured one.
+
+                    - The `schema` field must be a **valid JSON Schema**, according to the [official specification](https://json-schema.org/specification). This ensures that the generated report follows the expected structure.
+                    - The `fewShots` field must contain examples that **satisfy the defined schema**.
+
+                    > **Tip:** You can test and validate the custom report configuration directly in the backoffice, in the transformation tab in the application settings. This way, you can experiment with different schemas and examples before applying them in production.
+                  properties:
+                    instructions:
+                      type: string
+                      description: Instructions for report generation
+                      example: The report should be written in Brazilian Portuguese and should contain patient information, consultation details and diagnosis.
+                    schema:
+                      type: object
+                      description: JSON Schema of the report content
+                      properties:
+                        type:
+                          type: string
+                          example: object
+                        required:
+                          type: array
+                          items:
+                            type: string
+                        properties:
+                          type: object
+                          additionalProperties: true
+                        additionalProperties:
+                          type: boolean
+                      required:
+                        - type
+                        - required
+                        - properties
+                        - additionalProperties
+                    fewShots:
+                      type: string
+                      description: Examples of report filling in JSON string format
+                      example: '[{"foo":1,"bar":"test"},{"foo":2,"bar":"test2"}]'
+                  required:
+                    - instructions
+                    - schema
+      parameters:
+        - name: DAAI_CONSULTATION_ID
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: DAAI_RECORDING_ID
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "201":
+          description: Consultation finished successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Consultation ID
+                    example: s0q0ud3fi1d9kcwjrt8vs50n
+                  transcription:
+                    type: string
+                    description: Consultation transcription
+                    example: ""
+                  recording:
+                    type: object
+                    description: Recording information
+                    example: {}
+                  report:
+                    type: object
+                    description: Consultation report
+                    properties:
+                      specialty:
+                        type: string
+                        description: Consultation specialty
+                        example: generic
+                      content:
+                        type: object
+                        description: Report content
+                        example: {}
+                  metadata:
+                    type: object
+                    description: Consultation metadata
+                    example: {}
+                required:
+                  - id
+                  - transcription
+                  - recording
+                  - report
+                  - metadata
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: array
+                    description: List of validation error messages
+                    items:
+                      type: string
+                    example: ["specialty must be a string"]
+                  error:
+                    type: string
+                    description: Error type
+                    example: "Unprocessable Entity"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 422
+                required:
+                  - message
+                  - error
+                  - statusCode
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+                  statusCode:
+                    type: integer
+                    example: 401
+                required:
+                  - message
+                  - statusCode
+        "404":
+          description: Consultation not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: Consultation not found
+                  error:
+                    type: string
+                    description: Error type
+                    example: Not Found
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 404
+                required:
+                  - message
+                  - error
+                  - statusCode
+  /consultations:
+    post:
+      tags:
+        - Consultations
+      summary: Create consultation in a single step
+      description: |
+        <Warning>
+        When using this endpoint, the response time may be longer, as the audio is processed in a single step.
+        </Warning>
+
+        Creates a new medical consultation with the audio in a single step, without the need to send chunks separately.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                recording:
+                  type: string
+                  format: binary
+                  description: Consultation audio file
+                specialty:
+                  type: string
+                  description: Consultation specialty. If not provided, will be considered as 'generic'
+                  default: generic
+                  example: generic
+                notes:
+                  type: string
+                  description: Additional notes
+                  example: ""
+                reason:
+                  type: string
+                  description: Consultation reason
+                  example: ""
+                professionalId:
+                  type: string
+                  description: Professional ID
+                  example: "123456"
+                metadata:
+                  type: object
+                  description: Additional consultation metadata
+                  example: { "patient_id": "123456", "attendance_id": "123456" }
+              required:
+                - recording
+                - professionalId
+      responses:
+        "201":
+          description: Consultation created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Consultation ID
+                    example: s0q0ud3fi1d9kcwjrt8vs50n
+                  transcription:
+                    type: string
+                    description: Consultation transcription
+                    example: ""
+                  recording:
+                    type: object
+                    description: Recording information
+                    example: {}
+                  report:
+                    type: object
+                    description: Consultation report
+                    properties:
+                      specialty:
+                        type: string
+                        description: Consultation specialty
+                        example: generic
+                      content:
+                        type: object
+                        description: Report content
+                        example: {}
+                  metadata:
+                    type: object
+                    description: Consultation metadata
+                    example: {}
+                required:
+                  - id
+                  - transcription
+                  - recording
+                  - report
+                  - metadata
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: array
+                    description: List of validation error messages
+                    items:
+                      type: string
+                    example: ["recording is required"]
+                  error:
+                    type: string
+                    description: Error type
+                    example: "Unprocessable Entity"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 422
+                required:
+                  - message
+                  - error
+                  - statusCode
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+                  statusCode:
+                    type: integer
+                    example: 401
+                required:
+                  - message
+                  - statusCode
+  /specialties:
+    get:
+      tags:
+        - Consultations
+      summary: List specialties
+      description: Returns the list of all available specialties with their respective report templates.
+      responses:
+        "200":
+          description: List of available specialties and their content templates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  specialties:
+                    type: object
+                    description: Dictionary of specialties, where each key is the specialty identifier
+                    additionalProperties:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          description: Specialty name
+                        content:
+                          type: object
+                          description: Specialty content template. The structure is flexible and may vary according to the specialty
+                      required:
+                        - title
+                        - content
+                example:
+                  specialties:
+                    generic:
+                      title: Generalist
+                      content:
+                        patientInformation:
+                          index: 0
+                          title: Patient information
+                          content:
+                            name:
+                              title: Name
+                              content: []
+                            age:
+                              title: Age
+                              content: []
+                    psychiatry:
+                      title: Psychiatry
+                      content:
+                        patientInformation:
+                          index: 0
+                          title: Patient information
+                          content:
+                            name:
+                              title: Name
+                              content: []
+                            age:
+                              title: Age
+                              content: []
+  /consultations/{DAAI_CONSULTATION_ID}:
+    get:
+      tags:
+        - Consultations
+      summary: Get consultation
+      description: Returns the details of a specific consultation, including transcription, recording and structured medical report.
+      parameters:
+        - name: DAAI_CONSULTATION_ID
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Consultation details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Consultation ID
+                    example: s0q0ud3fi1d9kcwjrt8vs50n
+                  transcription:
+                    type: string
+                    description: Consultation audio transcription
+                    example: The patient came to me for the first consultation on July 23, 2024, with a history, a pre-Greek pathological history and current fibromyalgia.
+                  recording:
+                    type: object
+                    description: Recording information
+                    properties:
+                      duration:
+                        type: integer
+                        description: Duration in seconds
+                        example: 12
+                      url:
+                        type: string
+                        description: Recording URL
+                        example: https://storage.googleapis.com/doctor-assistant-consultations-stage/patients/unidentified/consultations/s0q0ud3fi1d9kcwjrt8vs50n/recordings/uh6iy80wogqnnnyvrdpk59k3-optimized.mp3
+                    required:
+                      - duration
+                      - url
+                  report:
+                    type: object
+                    description: Consultation report
+                    properties:
+                      specialty:
+                        type: string
+                        description: Consultation specialty
+                        example: generic
+                      content:
+                        type: object
+                        description: Report content
+                        properties:
+                          icd_json:
+                            type: object
+                            description: ICD information
+                            properties:
+                              assessment:
+                                type: object
+                                properties:
+                                  content:
+                                    type: object
+                                    properties:
+                                      description:
+                                        type: object
+                                        properties:
+                                          title:
+                                            type: string
+                                          content:
+                                            type: array
+                                            items:
+                                              type: object
+                                              properties:
+                                                icd:
+                                                  type: array
+                                                  items:
+                                                    type: string
+                                                content:
+                                                  type: string
+                          summary_json_pt:
+                            type: object
+                            description: Consultation summary in Portuguese. The structure of this object is flexible and follows the specialty template defined in the /specialties endpoint
+                          medicalPrescription:
+                            type: object
+                            description: Medical prescriptions
+                            properties:
+                              medications:
+                                type: object
+                                properties:
+                                  title:
+                                    type: string
+                                  content:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        dose:
+                                          type: string
+                                        name:
+                                          type: string
+                                        usage:
+                                          type: string
+                                        possible_medications_anvisa:
+                                          type: array
+                                          items:
+                                            type: object
+                      metadata:
+                        type: object
+                        description: Additional consultation metadata
+                required:
+                  - id
+                  - transcription
+                  - recording
+                  - report
+                  - metadata
+        "404":
+          description: Consultation not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: Consultation not found
+                  error:
+                    type: string
+                    description: Error type
+                    example: Not Found
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 404
+                required:
+                  - message
+                  - error
+                  - statusCode
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+                  statusCode:
+                    type: integer
+                    example: 401
+                required:
+                  - message
+                  - statusCode
+  /consultations/{DAAI_CONSULTATION_ID}/events:
+    get:
+      tags:
+        - Consultations
+      summary: Consultation events
+      description: Server-Sent Events (SSE) endpoint to receive real-time updates about the consultation
+      parameters:
+        - name: DAAI_CONSULTATION_ID
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Event stream established successfully
+          content:
+            text/event-stream:
+              schema:
+                type: object
+                properties:
+                  event:
+                    type: string
+                    description: Event type
+                    enum:
+                      - consultation.in-progress
+                      - consultation.completed
+                      - consultation.integrated
+                    example: consultation.integrated
+                required:
+                  - event
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+                  statusCode:
+                    type: integer
+                    example: 401
+                required:
+                  - message
+                  - statusCode
+        "404":
+          description: Consultation not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: Consultation not found
+                  error:
+                    type: string
+                    description: Error type
+                    example: Not Found
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 404
+                required:
+                  - message
+                  - error
+                  - statusCode
+  /exams:
+    post:
+      tags:
+        - Exams
+      summary: Process exam [Coming Soon]
+      description: |
+        <Warning>
+        🚧 This API is currently under development and will be available soon.
+        It will allow management and analysis of medical exams.
+        </Warning>
+      responses:
+        "200":
+          description: Under development
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: API under development
+  /summaries:
+    post:
+      tags:
+        - Summaries
+      summary: Document Summarization [Coming Soon]
+      description: |
+        <Warning>
+        🚧 This API is currently under development and will be available soon.
+        It will allow intelligent summarization of medical documents.
+        </Warning>
+      responses:
+        "200":
+          description: Under development
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: API under development

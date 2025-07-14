@@ -1,0 +1,83 @@
+---
+title: 'Getting Started'
+icon: 'play'
+description: 'In this section you will learn how to create your first application and perform initial configurations.'
+---
+
+## Creating your application
+
+The first step to start using Doctor Assistant AI is to create your first application. By accessing the 
+[dashboard](https://backoffice.doctorassistant.ai), you can create your first application and perform the initial 
+configurations.
+
+<Note>
+You can have multiple applications, each with their own configurations, but usually only one is necessary.
+</Note>
+
+## Execution environments
+
+When creating your application, it will already have access to the **Sandbox** and **Production** execution environments, 
+so you don't need to worry about creating more applications to test the platform.
+
+- **Sandbox**: Development environment, where you can test and validate the application's functionalities.
+- **Production**: Production environment, where the application runs in production and is accessed by real users.
+
+In the [dashboard](https://backoffice.doctorassistant.ai), to switch between environments, you can click the environment toggle button, which is located 
+in the upper right corner of the page.
+
+<Warning>
+  Any usage made in the production environment will enable billing for platform usage.
+</Warning>
+
+## Configuring your application
+
+There are some configuration aspects that are necessary for your application to work correctly.
+All these configurations can be made in the [dashboard](https://backoffice.doctorassistant.ai) in the 
+settings tab of your application, which can be accessed through the left sidebar menu.
+
+### Webhooks
+
+The first one is webhook configuration. Webhooks are events that Doctor Assistant AI sends to your application, 
+such as when a consultation is processed and completed.
+
+To configure webhook reception, you must provide one or more URLs that accept **HTTP POST** requests, where 
+Doctor Assistant AI can send the events. It's important that the URL is publicly accessible and that it returns 
+a **200** status, so that Doctor Assistant AI can confirm that the event was received.
+
+<Note>
+  Doctor Assistant AI does not store events sent by webhooks, therefore, if you want to have a history of these events, 
+  you must implement logic for this in your application.
+</Note>
+
+### APIs
+
+Doctor Assistant AI has several APIs that can be used to interact with the platform. Access to them can be
+enabled and disabled by accessing the APIs tab in your application's settings screen. Enable and disable the APIs you
+want to use according to your application's needs.
+
+<CardGroup cols={1}>
+  <Card title="Consultation" icon="stethoscope">
+    The consultation API allows you to send audio consultations to Doctor Assistant AI and receive their transcription, structured report
+    and even a list of recommended medications for a prescription.
+  </Card>
+  <Card title="Exams" icon="file-medical">
+    The exams API allows you to send exam files to Doctor Assistant AI and receive a structured document with all the values
+    found in the exam.
+  </Card>
+  <Card title="Summary" icon="clipboard-list">
+    The summary API allows you to send a consultation history and receive a detailed summary of all of them.
+  </Card>
+</CardGroup>
+
+<Note>
+  When creating a new application, all APIs are disabled by default. You must enable the APIs you want to use.
+</Note>
+
+### Authentication
+
+API keys are used to authenticate requests to Doctor Assistant AI's APIs. They are created automatically
+when you create a new application, one key per environment, and can be found in the **Integration** tab in your application's settings screen.
+
+<Warning>
+  API keys are sensitive and should be stored securely in your environment.
+</Warning>

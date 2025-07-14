@@ -1,0 +1,83 @@
+---
+title: 'Primeros pasos'
+icon: 'play'
+description: 'En esta sección aprenderás cómo crear tu primera aplicación y realizar las configuraciones iniciales.'
+---
+
+## Creando tu aplicación
+
+El primer paso para comenzar a usar Doctor Assistant AI es crear tu primera aplicación. Accediendo al 
+[dashboard](https://backoffice.doctorassistant.ai), puedes crear tu primera aplicación y realizar las configuraciones 
+iniciales.
+
+<Note>
+Puedes tener varias aplicaciones, cada una con sus propias configuraciones, pero usualmente solo una es necesaria.
+</Note>
+
+## Entornos de ejecución
+
+Al crear tu aplicación, ya tendrá acceso a los entornos de ejecución **Sandbox** y **Production**, 
+así que no necesitas preocuparte por crear más aplicaciones para probar la plataforma.
+
+- **Sandbox**: Entorno de desarrollo, donde puedes probar y validar las funcionalidades de la aplicación.
+- **Production**: Entorno de producción, donde la aplicación se ejecuta en producción y es accedida por usuarios reales.
+
+En el [dashboard](https://backoffice.doctorassistant.ai), para alternar entre los entornos, puedes hacer clic en el botón de alternancia de entorno, que está ubicado 
+en la esquina superior derecha de la página.
+
+<Warning>
+  Cualquier uso realizado en entorno de producción habilitará la facturación en relación al uso de la plataforma.
+</Warning>
+
+## Configurando tu aplicación
+
+Hay algunos aspectos de configuración que son necesarios para que tu aplicación funcione correctamente.
+Todas estas configuraciones pueden realizarse en el [dashboard](https://backoffice.doctorassistant.ai) en la 
+pestaña de configuraciones de tu aplicación, que puede accederse a través del menú lateral izquierdo.
+
+### Webhooks
+
+La primera de ellas es la configuración de los webhooks. Los webhooks son eventos que Doctor Assistant AI envía a tu aplicación, 
+como por ejemplo, cuando una consulta es procesada y completada.
+
+Para configurar la recepción de webhooks, debes proporcionar una o más URLs que acepten solicitudes **HTTP POST**, donde 
+Doctor Assistant AI podrá enviar los eventos. Es importante que la URL sea accesible públicamente y que retorne 
+un estado **200**, para que Doctor Assistant AI pueda confirmar que el evento fue recibido.
+
+<Note>
+  Doctor Assistant AI no almacena los eventos enviados por los webhooks, por lo tanto, si quieres tener un historial de estos eventos, 
+  debes implementar una lógica para esto en tu aplicación.
+</Note>
+
+### APIs
+
+Doctor Assistant AI posee varias APIs que pueden ser utilizadas para interactuar con la plataforma. El acceso a ellas puede ser
+activado y desactivado accediendo a la pestaña de APIs en la pantalla de configuraciones de tu aplicación. Activa y desactiva las APIs que
+deseas utilizar de acuerdo con la necesidad de tu aplicación.
+
+<CardGroup cols={1}>
+  <Card title="Consultation" icon="stethoscope">
+    La API de consultas te permite enviar consultas en audio a Doctor Assistant AI y recibir su transcripción, reporte estructurado
+    e incluso una lista de medicamentos recomendados para una prescripción.
+  </Card>
+  <Card title="Exams" icon="file-medical">
+    La API de exámenes te permite enviar archivos de exámenes a Doctor Assistant AI y recibir un documento estructurado con todos los valores
+    encontrados en el examen.
+  </Card>
+  <Card title="Summary" icon="clipboard-list">
+    La API de resúmenes te permite enviar un historial de consultas y recibir un resumen detallado de todas ellas.
+  </Card>
+</CardGroup>
+
+<Note>
+  Al crear una nueva aplicación, todas las APIs están desactivadas por defecto. Debes activar las APIs que deseas utilizar.
+</Note>
+
+### Autenticación
+
+Las claves de API son utilizadas para autenticar las solicitudes a las APIs de Doctor Assistant AI. Son creadas automáticamente
+cuando creas una nueva aplicación, una clave por entorno, y pueden encontrarse en la pestaña de **Integración** en la pantalla de configuraciones de tu aplicación.
+
+<Warning>
+  Las claves de API son sensibles y deben ser almacenadas de forma segura en tu entorno.
+</Warning>
