@@ -1,0 +1,86 @@
+---
+title: 'Integrando'
+icon: 'code'
+description: 'Nessa seção você aprenderá a integrar a Doctor Assistant AI em sua aplicação.'
+---
+
+Existem duas formas de integrar a Doctor Assistant AI em sua aplicação:
+
+<CardGroup cols={2}>
+  <Card title="APIs" icon="code">
+    Integre a Doctor Assistant AI utilizando nossas APIs REST para ter controle total sobre a experiência do usuário.
+  </Card>
+  <Card title="Web Components" icon="browser">
+    Utilize nossos componentes web prontos para uso e tenha uma integração rápida e simplificada.
+  </Card>
+</CardGroup>
+
+## Utilizando as APIs
+
+<AccordionGroup>
+  <Accordion title="API de Consultas" icon="stethoscope">
+    A API de consultas permite que você envie consultas em áudio para a Doctor Assistant AI e receba sua transcrição, relatório estruturado
+    e até mesmo uma lista de medicamentos recomendados para uma prescrição. Essa API é ideal para integrar a Doctor Assistant AI em seu
+    sistema de prontuário eletrônico ou aplicativo de telemedicina.
+
+    <Link href="/api-reference/consultations">Acessar referência</Link>
+  </Accordion>
+  <Accordion title="API de Exames" icon="file-medical">
+    A API de exames permite que você envie arquivos de exames para a Doctor Assistant AI e receba um documento estruturado com todos os valores
+    encontrados no exame. Com ela você pode automatizar a extração de dados de exames laboratoriais e de imagem, facilitando o trabalho
+    dos profissionais de saúde.
+
+    <Link href="/api-reference/exams">Acessar referência</Link>
+  </Accordion>
+  <Accordion title="API de Resumos" icon="clipboard-list">
+    A API de resumos permite que você envie um histórico de consultas e receba um resumo detalhado de todas elas. Ideal para ter uma
+    visão consolidada do histórico do paciente e auxiliar na tomada de decisão clínica.
+
+    <Link href="/api-reference/summaries">Acessar referência</Link>
+  </Accordion>
+</AccordionGroup>
+
+## Utilizando os Web Components
+
+<AccordionGroup>
+  <Accordion title="Consultation Recorder" icon="stethoscope">
+    O web component de consulta é um componente prontuário eletrônico que permite que você integre a Doctor Assistant AI em seu sistema de prontuário eletrônico.
+
+    <Link href="/web-components/consultation-recorder">Acessar referência</Link>
+  </Accordion>
+</AccordionGroup>
+
+## Webhooks de Eventos
+
+Nossa plataforma envia notificações via Webhook sempre que determinadas ações acontecem. O Webhook é um POST enviado para a URL configurada na dashboard da sua aplicação. É esperado que seu endpoint responda com um status HTTP 2xx para confirmar o recebimento.
+
+O payload enviado será sempre um JSON com a seguinte estrutura:
+
+```json
+{
+  "event": "CONSULTATION_SUCCESS", // string identificando o evento
+  "data": { /* conteúdo variável conforme o recurso */ },
+  "error": {
+    "message": "Descrição do erro, se houver"
+  }
+}
+```
+
+- `event`: string que identifica o tipo de evento.
+- `data`: objeto com os dados específicos do recurso (varia conforme a API que originou o evento e segue o mesmo formato de resposta da API no verbo GET).
+- `error`: objeto opcional, presente apenas em casos de falha, contendo uma mensagem descritiva do erro.
+
+### Eventos disponíveis
+
+Atualmente, os seguintes eventos podem ser recebidos:
+
+- `CONSULTATION_SUCCESS`: Consulta processada com sucesso.
+- `CONSULTATION_FAILED`: Ocorreu uma falha ao processar a consulta.
+
+### Estratégias de Envio
+
+Ao finalizar o processamento de um recurso, tentaremos enviar o webhook até 5 vezes, utilizando intervalos exponenciais a partir de 5 segundos entre as tentativas. Caso todas as tentativas falhem e o webhook não seja integrado com sucesso, realizaremos uma nova tentativa de integração todos os dias às 22h, utilizando o mesmo mecanismo de reenvio. Esse processo diário continuará até que o webhook seja integrado com sucesso (ou seja, até recebermos uma resposta HTTP 2xx do seu endpoint).
+
+### Segurança
+
+Se desejar adicionar uma camada de segurança baseada na origem dos Webhooks, configure seu endpoint para aceitar requisições originadas do host `35.193.128.22`, que é o endereço IP da nossa plataforma para produção.

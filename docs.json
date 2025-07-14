@@ -33,6 +33,26 @@
           }
         ]
       }
+    ],
+    "languages": [
+      {
+        "language": "pt-BR",
+        "groups": [
+          {
+            "group": "Primeiros Passos",
+            "pages": ["docs/pt-br/introduction", "docs/pt-br/quickstart", "docs/pt-br/development", "docs/pt-br/web-components/consultation-recorder"]
+          }
+        ]
+      },
+      {
+        "language": "en",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["docs/en/introduction", "docs/en/quickstart", "docs/en/development", "docs/en/web-components/consultation-recorder"]
+          }
+        ]
+      }
     ]
   },
   "logo": {
