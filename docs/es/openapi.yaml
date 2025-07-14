@@ -22,8 +22,8 @@ paths:
     post:
       tags:
         - Consultations
-      summary: Iniciar consulta
-      description: Inicia una nueva consulta médica. Retorna los IDs necesarios para enviar los chunks de audio.
+      summary: Comenzar consulta
+      description: Comenza una nueva consulta médica. Retorna los IDs necesarios para enviar los chunks de audio.
       requestBody:
         content:
           application/json:
@@ -124,7 +124,7 @@ paths:
     post:
       tags:
         - Consultations
-      summary: Enviar chunk de audio
+      summary: Mandar chunk de audio
       description: Envía un chunk de audio de la consulta. Los chunks deben ser enviados en orden secuencial usando el parámetro chunkIndex.
       requestBody:
         content:
@@ -221,8 +221,8 @@ paths:
     post:
       tags:
         - Consultations
-      summary: Finalizar consulta
-      description: Finaliza la consulta e inicia el procesamiento del audio. La especialidad puede ser especificada para determinar el template del reporte.
+      summary: Terminar consulta
+      description: Termina la consulta e inicia el procesamiento del audio. La especialidad puede ser especificada para determinar el template del reporte.
       requestBody:
         content:
           application/json:
@@ -525,7 +525,7 @@ paths:
     get:
       tags:
         - Consultations
-      summary: Listar especialidades
+      summary: Especialidades disponibles
       description: Retorna la lista de todas las especialidades disponibles con sus respectivos templates de reporte.
       responses:
         "200":
