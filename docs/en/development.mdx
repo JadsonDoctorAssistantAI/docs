@@ -1,86 +1,86 @@
 ---
-title: 'Integrando'
+title: 'Integration'
 icon: 'code'
-description: 'Nessa seção você aprenderá a integrar a Doctor Assistant AI em sua aplicação.'
+description: 'In this section you will learn how to integrate Doctor Assistant AI into your application.'
 ---
 
-Existem duas formas de integrar a Doctor Assistant AI em sua aplicação:
+There are two ways to integrate Doctor Assistant AI into your application:
 
 <CardGroup cols={2}>
   <Card title="APIs" icon="code">
-    Integre a Doctor Assistant AI utilizando nossas APIs REST para ter controle total sobre a experiência do usuário.
+    Integrate Doctor Assistant AI using our REST APIs to have full control over the user experience.
   </Card>
   <Card title="Web Components" icon="browser">
-    Utilize nossos componentes web prontos para uso e tenha uma integração rápida e simplificada.
+    Use our ready-to-use web components and have a quick and simplified integration.
   </Card>
 </CardGroup>
 
-## Utilizando as APIs
+## Using the APIs
 
 <AccordionGroup>
-  <Accordion title="API de Consultas" icon="stethoscope">
-    A API de consultas permite que você envie consultas em áudio para a Doctor Assistant AI e receba sua transcrição, relatório estruturado
-    e até mesmo uma lista de medicamentos recomendados para uma prescrição. Essa API é ideal para integrar a Doctor Assistant AI em seu
-    sistema de prontuário eletrônico ou aplicativo de telemedicina.
+  <Accordion title="Consultation API" icon="stethoscope">
+    The consultation API allows you to send audio consultations to Doctor Assistant AI and receive their transcription, structured report
+    and even a list of recommended medications for a prescription. This API is ideal for integrating Doctor Assistant AI into your
+    electronic medical record system or telemedicine application.
 
-    <Link href="/api-reference/consultations">Acessar referência</Link>
+    <Link href="/api-reference/consultations">Access reference</Link>
   </Accordion>
-  <Accordion title="API de Exames" icon="file-medical">
-    A API de exames permite que você envie arquivos de exames para a Doctor Assistant AI e receba um documento estruturado com todos os valores
-    encontrados no exame. Com ela você pode automatizar a extração de dados de exames laboratoriais e de imagem, facilitando o trabalho
-    dos profissionais de saúde.
+  <Accordion title="Exams API" icon="file-medical">
+    The exams API allows you to send exam files to Doctor Assistant AI and receive a structured document with all the values
+    found in the exam. With it you can automate the extraction of data from laboratory and imaging exams, facilitating the work
+    of healthcare professionals.
 
-    <Link href="/api-reference/exams">Acessar referência</Link>
+    <Link href="/api-reference/exams">Access reference</Link>
   </Accordion>
-  <Accordion title="API de Resumos" icon="clipboard-list">
-    A API de resumos permite que você envie um histórico de consultas e receba um resumo detalhado de todas elas. Ideal para ter uma
-    visão consolidada do histórico do paciente e auxiliar na tomada de decisão clínica.
+  <Accordion title="Summary API" icon="clipboard-list">
+    The summary API allows you to send a consultation history and receive a detailed summary of all of them. Ideal for having a
+    consolidated view of the patient's history and assisting in clinical decision making.
 
-    <Link href="/api-reference/summaries">Acessar referência</Link>
+    <Link href="/api-reference/summaries">Access reference</Link>
   </Accordion>
 </AccordionGroup>
 
-## Utilizando os Web Components
+## Using Web Components
 
 <AccordionGroup>
   <Accordion title="Consultation Recorder" icon="stethoscope">
-    O web component de consulta é um componente prontuário eletrônico que permite que você integre a Doctor Assistant AI em seu sistema de prontuário eletrônico.
+    The consultation web component is an electronic medical record component that allows you to integrate Doctor Assistant AI into your electronic medical record system.
 
-    <Link href="/web-components/consultation-recorder">Acessar referência</Link>
+    <Link href="/web-components/consultation-recorder">Access reference</Link>
   </Accordion>
 </AccordionGroup>
 
-## Webhooks de Eventos
+## Event Webhooks
 
-Nossa plataforma envia notificações via Webhook sempre que determinadas ações acontecem. O Webhook é um POST enviado para a URL configurada na dashboard da sua aplicação. É esperado que seu endpoint responda com um status HTTP 2xx para confirmar o recebimento.
+Our platform sends notifications via Webhook whenever certain actions occur. The Webhook is a POST sent to the URL configured in your application's dashboard. It is expected that your endpoint responds with an HTTP 2xx status to confirm receipt.
 
-O payload enviado será sempre um JSON com a seguinte estrutura:
+The payload sent will always be a JSON with the following structure:
 
 ```json
 {
-  "event": "CONSULTATION_SUCCESS", // string identificando o evento
-  "data": { /* conteúdo variável conforme o recurso */ },
+  "event": "CONSULTATION_SUCCESS", // string identifying the event
+  "data": { /* variable content according to the resource */ },
   "error": {
-    "message": "Descrição do erro, se houver"
+    "message": "Error description, if any"
   }
 }
 ```
 
-- `event`: string que identifica o tipo de evento.
-- `data`: objeto com os dados específicos do recurso (varia conforme a API que originou o evento e segue o mesmo formato de resposta da API no verbo GET).
-- `error`: objeto opcional, presente apenas em casos de falha, contendo uma mensagem descritiva do erro.
+- `event`: string that identifies the event type.
+- `data`: object with the specific data of the resource (varies according to the API that originated the event and follows the same response format as the API in the GET verb).
+- `error`: optional object, present only in failure cases, containing a descriptive error message.
 
-### Eventos disponíveis
+### Available events
 
-Atualmente, os seguintes eventos podem ser recebidos:
+Currently, the following events can be received:
 
-- `CONSULTATION_SUCCESS`: Consulta processada com sucesso.
-- `CONSULTATION_FAILED`: Ocorreu uma falha ao processar a consulta.
+- `CONSULTATION_SUCCESS`: Consultation processed successfully.
+- `CONSULTATION_FAILED`: An error occurred while processing the consultation.
 
-### Estratégias de Envio
+### Sending Strategies
 
-Ao finalizar o processamento de um recurso, tentaremos enviar o webhook até 5 vezes, utilizando intervalos exponenciais a partir de 5 segundos entre as tentativas. Caso todas as tentativas falhem e o webhook não seja integrado com sucesso, realizaremos uma nova tentativa de integração todos os dias às 22h, utilizando o mesmo mecanismo de reenvio. Esse processo diário continuará até que o webhook seja integrado com sucesso (ou seja, até recebermos uma resposta HTTP 2xx do seu endpoint).
+When finishing processing a resource, we will try to send the webhook up to 5 times, using exponential intervals starting from 5 seconds between attempts. If all attempts fail and the webhook is not successfully integrated, we will make a new integration attempt every day at 10 PM, using the same resend mechanism. This daily process will continue until the webhook is successfully integrated (i.e., until we receive an HTTP 2xx response from your endpoint).
 
-### Segurança
+### Security
 
-Se desejar adicionar uma camada de segurança baseada na origem dos Webhooks, configure seu endpoint para aceitar requisições originadas do host `35.193.128.22`, que é o endereço IP da nossa plataforma para produção.
+If you want to add a security layer based on the origin of Webhooks, configure your endpoint to accept requests originating from the host `35.193.128.22`, which is our platform's IP address for production.

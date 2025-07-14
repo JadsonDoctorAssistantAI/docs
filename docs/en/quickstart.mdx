@@ -1,83 +1,83 @@
 ---
-title: 'Primeiros passos'
+title: 'Getting Started'
 icon: 'play'
-description: 'Nessa seção você aprenderá como criar sua primeira aplicação e realizar as configurações iniciais.'
+description: 'In this section you will learn how to create your first application and perform initial configurations.'
 ---
 
-## Criando sua aplicação
+## Creating your application
 
-O primeiro passo para começar a usar a Doctor Assistant AI é criar sua primeira aplicação. Acessando o 
-[dashboard](https://backoffice.doctorassistant.ai), você pode criar sua primeira aplicação e realizar as configurações 
-iniciais.
+The first step to start using Doctor Assistant AI is to create your first application. By accessing the 
+[dashboard](https://backoffice.doctorassistant.ai), you can create your first application and perform the initial 
+configurations.
 
 <Note>
-Você pode ter várias aplicações, cada uma com suas próprias configurações, mas usualmente apenas uma é necessária.
+You can have multiple applications, each with their own configurations, but usually only one is necessary.
 </Note>
 
-## Ambientes de execução
+## Execution environments
 
-Ao criar sua aplicação, ela já possuirá acesso aos ambientes de execução **Sandbox** e **Production**, 
-então não precisa se preocupar em criar mais aplicacoes para testar a plataforma.
+When creating your application, it will already have access to the **Sandbox** and **Production** execution environments, 
+so you don't need to worry about creating more applications to test the platform.
 
-- **Sandbox**: Ambiente de desenvolvimento, onde você pode testar e validar as funcionalidades da aplicação.
-- **Production**: Ambiente de produção, onde a aplicação é executada em produção e é acessada por usuários reais.
+- **Sandbox**: Development environment, where you can test and validate the application's functionalities.
+- **Production**: Production environment, where the application runs in production and is accessed by real users.
 
-No [dashboard](https://backoffice.doctorassistant.ai), para alternar entre os ambientes, você pode clicar no botão de alternância de ambiente, que está localizado 
-no canto superior direito da página.
+In the [dashboard](https://backoffice.doctorassistant.ai), to switch between environments, you can click the environment toggle button, which is located 
+in the upper right corner of the page.
 
 <Warning>
-  Qualquer uso feito em ambiente de produção habilitará a cobrança em relação ao uso da plataforma.
+  Any usage made in the production environment will enable billing for platform usage.
 </Warning>
 
-## Configurando sua aplicação
+## Configuring your application
 
-Há alguns aspectos de configuração que são necessários para que sua aplicação funcione corretamente.
-Todas essas configurações podem ser feitas no [dashboard](https://backoffice.doctorassistant.ai) na 
-aba de configurações da sua aplicação, que pode ser acessada através do menu lateral esquerdo.
+There are some configuration aspects that are necessary for your application to work correctly.
+All these configurations can be made in the [dashboard](https://backoffice.doctorassistant.ai) in the 
+settings tab of your application, which can be accessed through the left sidebar menu.
 
 ### Webhooks
 
-A primeira delas é a configuração dos webhooks. Webhooks são eventos que a Doctor Assistant AI envia para a sua aplicação, 
-como por exemplo, quando uma consulta é processada e concluída.
+The first one is webhook configuration. Webhooks are events that Doctor Assistant AI sends to your application, 
+such as when a consultation is processed and completed.
 
-Para configurar o recebimento de webhooks, você deve fornecer uma ou mais URLs que aceitem requisições **HTTP POST**, onde 
-a Doctor Assistant AI poderá enviar os eventos. É importante que a URL seja acessível publicamente e que ela retorne 
-um status **200**, para que a Doctor Assistant AI possa confirmar que o evento foi recebido.
+To configure webhook reception, you must provide one or more URLs that accept **HTTP POST** requests, where 
+Doctor Assistant AI can send the events. It's important that the URL is publicly accessible and that it returns 
+a **200** status, so that Doctor Assistant AI can confirm that the event was received.
 
 <Note>
-  A Doctor Assistant AI não armazena os eventos enviados pelos webhooks, portanto, caso queira ter um histórico desses eventos, 
-  você deve implementar uma lógica para isso em sua aplicação.
+  Doctor Assistant AI does not store events sent by webhooks, therefore, if you want to have a history of these events, 
+  you must implement logic for this in your application.
 </Note>
 
 ### APIs
 
-A Doctor Assistant AI possui várias APIs que podem ser utilizadas para interagir com a plataforma. O acesso a elas pode ser
-ativado e desativado acessando a aba de APIs na tela de configurações da sua aplicação. Ative e desative as APIs que você
-deseja utilizar de acordo com a necessidade da sua aplicação.
+Doctor Assistant AI has several APIs that can be used to interact with the platform. Access to them can be
+enabled and disabled by accessing the APIs tab in your application's settings screen. Enable and disable the APIs you
+want to use according to your application's needs.
 
 <CardGroup cols={1}>
   <Card title="Consultation" icon="stethoscope">
-    A API de consultas permite que você envie consultas em áudio para a Doctor Assistant AI e receba sua transcrição, relatório estruturado
-    e até mesmo uma lista de medicamentos recomendados para uma prescrição.
+    The consultation API allows you to send audio consultations to Doctor Assistant AI and receive their transcription, structured report
+    and even a list of recommended medications for a prescription.
   </Card>
   <Card title="Exams" icon="file-medical">
-    A API de exames permite que você envie arquivos de exames para a Doctor Assistant AI e receba um documento estruturado com todos os valores
-    encontrados no exame.
+    The exams API allows you to send exam files to Doctor Assistant AI and receive a structured document with all the values
+    found in the exam.
   </Card>
   <Card title="Summary" icon="clipboard-list">
-    A API de resumos permite que você envie um histórico de consultas e receba um resumo detalhado de todas elas.
+    The summary API allows you to send a consultation history and receive a detailed summary of all of them.
   </Card>
 </CardGroup>
 
 <Note>
-  Ao criar uma nova aplicação, todas as APIs estão desativadas por padrão. Você deve ativar as APIs que deseja utilizar.
+  When creating a new application, all APIs are disabled by default. You must enable the APIs you want to use.
 </Note>
 
-### Autenticação
+### Authentication
 
-As chaves de API são utilizadas para autenticar as requisições às APIs da Doctor Assistant AI. Elas são criadas automaticamente
-quando você cria uma nova aplicação, uma chave por ambiente, e podem ser encontradas na aba de **Integração** na tela de configurações da sua aplicação.
+API keys are used to authenticate requests to Doctor Assistant AI's APIs. They are created automatically
+when you create a new application, one key per environment, and can be found in the **Integration** tab in your application's settings screen.
 
 <Warning>
-  As chaves de API são sensíveis e devem ser armazenadas de forma segura em seu ambiente.
+  API keys are sensitive and should be stored securely in your environment.
 </Warning>

@@ -1,7 +1,7 @@
 ---
 title: 'Consultation Recorder'
 icon: 'podcast'
-description: 'Componente web para gravação e transcrição de consultas médicas'
+description: 'Web component for recording and transcribing medical consultations'
 ---
 
 export const Specialties = () => {
@@ -21,12 +21,12 @@ export const Specialties = () => {
           }), {});
         setSpecialties(sortedSpecialties);
       })
-      .catch(error => console.error('Erro ao buscar especialidades:', error))
+      .catch(error => console.error('Error fetching specialties:', error))
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
-    return <div>Carregando especialidades...</div>;
+    return <div>Loading specialties...</div>;
   }
   
   return (
@@ -41,9 +41,9 @@ export const Specialties = () => {
   );
 }
 
-## Instalação
+## Installation
 
-Para instalar o componente no seu projeto:
+To install the component in your project:
 
 ### Via NPM
 
@@ -53,7 +53,7 @@ npm i @doctorassistant/daai-component
 
 ### Via CDN
 
-Alternativamente, você pode incluir o componente diretamente via CDN:
+Alternatively, you can include the component directly via CDN:
 
 ```html
 <script
@@ -62,80 +62,80 @@ Alternativamente, você pode incluir o componente diretamente via CDN:
 ></script>
 ```
 
-## Uso Básico
+## Basic Usage
 
-Após a instalação, importe e utilize o componente:
+After installation, import and use the component:
 
 ```jsx
 import '@doctorassistant/daai-component';
 
 <daai-consultation-recorder
-  apiKey="SUA_API_KEY"
-  professional="ID_DO_PROFISSIONAL"
+  apiKey="YOUR_API_KEY"
+  professional="PROFESSIONAL_ID"
 />
 ```
 
-## Propriedades
+## Properties
 
-### Propriedades Obrigatórias
+### Required Properties
 
-| Propriedade | Tipo | Descrição |
-|-------------|------|-----------|
-| `apiKey` | string | Chave da API necessária para realizar requisições |
-| `professional` | string | Identificador único do profissional que utilizará o componente |
+| Property | Type | Description |
+|----------|------|-------------|
+| `apiKey` | string | API key required to make requests |
+| `professional` | string | Unique identifier of the professional who will use the component |
 
-### Propriedades Opcionais
+### Optional Properties
 
-| Propriedade | Tipo | Descrição |
-|-------------|------|-----------|
-| `specialty` | string | Define a especialidade médica para o registro |
-| `metadata` | object | Dados adicionais para recuperação via webhook |
-| `telemedicine` | boolean | Ativa funcionalidade de telemedicina |
-| `hideTutorial` | boolean | Desativa o modal de tutorial da telemedicina |
-| `maxRecordingTime` | number | Tempo máximo de gravação em segundos |
-| `warningRecordingTime` | number | Tempo em segundos antes do limite para aviso |
-| `reportSchema` | object | Esquema customizado do relatório, conforme especificação da API. Permite definir instruções, schema e exemplos para o relatório gerado. |
+| Property | Type | Description |
+|----------|------|-------------|
+| `specialty` | string | Defines the medical specialty for the record |
+| `metadata` | object | Additional data for webhook retrieval |
+| `telemedicine` | boolean | Enables telemedicine functionality |
+| `hideTutorial` | boolean | Disables the telemedicine tutorial modal |
+| `maxRecordingTime` | number | Maximum recording time in seconds |
+| `warningRecordingTime` | number | Time in seconds before the limit for warning |
+| `reportSchema` | object | Custom report schema, according to API specification. Allows defining instructions, schema and examples for the generated report. |
 
-## Eventos
+## Events
 
-O componente emite os seguintes eventos que podem ser capturados:
+The component emits the following events that can be captured:
 
 ```jsx
-// Início da gravação
+// Start of recording
 onStart = (data) => {
-  console.log("Gravação iniciada:", data);
+  console.log("Recording started:", data);
 };
 
-// Sucesso na gravação
+// Recording success
 onSuccess = (data) => {
-  console.log("Gravação finalizada com sucesso:", data);
+  console.log("Recording completed successfully:", data);
 };
 
-// Erro durante a gravação
+// Error during recording
 onError = (error) => {
-  console.log("Erro:", error);
+  console.log("Error:", error);
 };
 
-// Eventos do componente
+// Component events
 onEvent = (event) => {
-  console.log("Evento:", event);
+  console.log("Event:", event);
 };
 
-// Aviso de tempo restante
+// Remaining time warning
 onWarningRecordingTime = () => {
-  console.log("Aviso de tempo restante");
+  console.log("Remaining time warning");
 };
 ```
 
-## Especialidades Disponíveis
+## Available Specialties
 
-O componente suporta várias especialidades médicas, sendo elas:
+The component supports various medical specialties, which are:
 
 <Specialties />
 
-## Customização
+## Customization
 
-O componente pode ser customizado através de variáveis CSS:
+The component can be customized through CSS variables:
 
 ```css
 daai-consultation-recorder {
@@ -154,7 +154,7 @@ daai-consultation-recorder {
 }
 ```
 
-## Integração com Frameworks
+## Framework Integration
 
 ### React
 
@@ -168,11 +168,11 @@ function App() {
     
     if (recorder) {
       recorder.onSuccess = (response) => {
-        console.log("Sucesso:", response);
+        console.log("Success:", response);
       };
       
       recorder.onError = (error) => {
-        console.log("Erro:", error);
+        console.log("Error:", error);
       };
     }
   }, []);
@@ -180,8 +180,8 @@ function App() {
   return (
     <daai-consultation-recorder
       id="recorder"
-      apiKey="SUA_API_KEY"
-      professional="ID_DO_PROFISSIONAL"
+      apiKey="YOUR_API_KEY"
+      professional="PROFESSIONAL_ID"
     />
   );
 }
@@ -205,13 +205,13 @@ import '@doctorassistant/daai-component';
 export default {
   setup() {
     const recorder = ref(null);
-    const apiKey = 'SUA_API_KEY';
-    const professionalId = 'ID_DO_PROFISSIONAL';
+    const apiKey = 'YOUR_API_KEY';
+    const professionalId = 'PROFESSIONAL_ID';
 
     onMounted(() => {
       if (recorder.value) {
         recorder.value.onSuccess = (response) => {
-          console.log('Sucesso:', response);
+          console.log('Success:', response);
         };
       }
     });
@@ -226,49 +226,49 @@ export default {
 </script>
 ```
 
-## Segurança
+## Security
 
-O componente foi desenvolvido seguindo as melhores práticas de segurança:
+The component was developed following security best practices:
 
-- Criptografia de ponta a ponta
-- Conformidade com HIPAA
-- Controle de acesso
-- Auditoria transparente
+- End-to-end encryption
+- HIPAA compliance
+- Access control
+- Transparent auditing
 
-## Limitações de Tempo
+## Time Limitations
 
-Para configurar limites de tempo de gravação:
+To configure recording time limits:
 
 ```jsx
 <daai-consultation-recorder
-  apiKey="SUA_API_KEY"
-  professional="ID_DO_PROFISSIONAL"
-  maxRecordingTime={300} // 5 minutos
-  warningRecordingTime={30} // Aviso 30 segundos antes
+  apiKey="YOUR_API_KEY"
+  professional="PROFESSIONAL_ID"
+  maxRecordingTime={300} // 5 minutes
+  warningRecordingTime={30} // Warning 30 seconds before
 />
 ```
 
-## Esquema customizado do relatório
+## Custom report schema
 
 <Info>
-A funcionalidade de customização do relatório (`report-schema`) está disponível apenas a partir da versão **2.3.1** do componente.
+The report customization functionality (`report-schema`) is only available from component version **2.3.1** onwards.
 </Info>
 
-Você pode customizar o relatório gerado pelo componente utilizando a propriedade `report-schema`. Isso permite definir instruções, um schema e exemplos para o relatório, tornando a geração do conteúdo mais flexível e adaptada à sua necessidade.
+You can customize the report generated by the component using the `report-schema` property. This allows you to define instructions, a schema and examples for the report, making the content generation more flexible and adapted to your needs.
 
-> **Dica:** É possível testar e validar a configuração do relatório customizado diretamente no backoffice, na aba de transformação nas configurações da aplicação. Assim, você pode experimentar diferentes schemas e exemplos antes de aplicar em produção.
+> **Tip:** You can test and validate the custom report configuration directly in the backoffice, in the transformation tab in the application settings. This way, you can experiment with different schemas and examples before applying them in production.
 
-- O campo `schema` deve ser um **JSON Schema válido**, conforme a [especificação oficial](https://json-schema.org/specification). Isso garante que o relatório gerado siga a estrutura esperada.
-- O campo `fewShots` deve conter exemplos que **satisfazem o schema definido**. Dessa forma, os exemplos servem como referência para o preenchimento correto do relatório.
+- The `schema` field must be a **valid JSON Schema**, according to the [official specification](https://json-schema.org/specification). This ensures that the generated report follows the expected structure.
+- The `fewShots` field must contain examples that **satisfy the defined schema**. This way, the examples serve as a reference for the correct filling of the report.
 
-Por exemplo:
+For example:
 
 ```javascript
 <daai-consultation-recorder
-  apikey="SUA_API_KEY"
-  professional="ID_DO_PROFISSIONAL"
+  apikey="YOUR_API_KEY"
+  professional="PROFESSIONAL_ID"
   report-schema='{
-    "instructions": "O relatório deve ser escrito em português brasileiro...",
+    "instructions": "The report should be written in Brazilian Portuguese...",
     "schema": {
       "type": "object",
       "required": ["foo", "bar"],
