@@ -18,13 +18,18 @@
             "pages": [
               "docs/pt-br/introduction",
               "docs/pt-br/quickstart",
-              "docs/pt-br/development",
-              "docs/pt-br/web-components/consultation-recorder"
+              "docs/pt-br/development"
             ]
           },
           {
             "group": "Referência da API",
             "openapi": "docs/pt-br/openapi.yaml"
+          },
+          {
+            "group": "Componentes Web",
+            "pages": [
+              "docs/pt-br/web-components/consultation-recorder"
+            ]
           }
         ]
       },
@@ -36,13 +41,18 @@
             "pages": [
               "docs/en/introduction",
               "docs/en/quickstart",
-              "docs/en/development",
-              "docs/en/web-components/consultation-recorder"
+              "docs/en/development"
             ]
           },
           {
             "group": "API Reference",
             "openapi": "docs/en/openapi.yaml"
+          },
+          {
+            "group": "Web Components",
+            "pages": [
+              "docs/en/web-components/consultation-recorder"
+            ]
           }
         ]
       },
@@ -54,13 +64,18 @@
             "pages": [
               "docs/es/introduction",
               "docs/es/quickstart",
-              "docs/es/development",
-              "docs/es/web-components/consultation-recorder"
+              "docs/es/development"
             ]
           },
           {
             "group": "Referencia de API",
             "openapi": "docs/es/openapi.yaml"
+          },
+          {
+            "group": "Componentes Web",
+            "pages": [
+              "docs/es/web-components/consultation-recorder"
+            ]
           }
         ]
       }
