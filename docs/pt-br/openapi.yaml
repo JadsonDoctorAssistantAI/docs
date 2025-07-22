@@ -1174,10 +1174,10 @@ paths:
                     type: string
                     description: Tipo do evento
                     enum:
-                      - exam.pending
                       - exam.processing
                       - exam.completed
                       - exam.failed
+                      - exam.integrated
                     example: exam.completed
                 required:
                   - event
