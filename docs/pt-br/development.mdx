@@ -72,10 +72,15 @@ O payload enviado será sempre um JSON com a seguinte estrutura:
 
 ### Eventos disponíveis
 
-Atualmente, os seguintes eventos podem ser recebidos:
+Atualmente, os seguintes eventos podem ser recebidos, organizados por contexto:
 
+#### Consultas
 - `CONSULTATION_SUCCESS`: Consulta processada com sucesso.
 - `CONSULTATION_FAILED`: Ocorreu uma falha ao processar a consulta.
+
+#### Exames
+- `EXAM_SUCCESS`: Exame processado com sucesso.
+- `EXAM_FAILED`: Ocorreu uma falha ao processar o exame.
 
 ### Estratégias de Envio
 

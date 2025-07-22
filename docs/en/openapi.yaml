@@ -803,19 +803,95 @@ paths:
                   - message
                   - error
                   - statusCode
-  /exams:
+  /exams/batch:
     post:
       tags:
         - Exams
-      summary: Process exam [Coming Soon]
-      description: |
-        <Warning>
-        🚧 This API is currently under development and will be available soon.
-        It will allow management and analysis of medical exams.
-        </Warning>
+      summary: Process exams in batch
+      description: Send one or more exam files to be processed and returns the creation result. Processing is performed in batch and asynchronously, so it is necessary to query the exam after creation or have a webhook configured to receive the data.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: x-daai-professional-id
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Professional ID responsible for processing the exams
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  maxItems: 10
+                  description: Exam files for processing - accepts images (JPG, PNG, etc.) and PDF (maximum 10 files, 25MB each)
+                metadata:
+                  type: string
+                  description: Additional metadata in JSON string format (optional)
+                  example: '{"patient_id": "123456", "exam_type": "blood_test"}'
+              required:
+                - files
       responses:
         "200":
-          description: Under development
+          description: Exams processed successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    fileName:
+                      type: string
+                      description: Name of the submitted file
+                      example: "Complete_Blood_Count.pdf"
+                    success:
+                      type: boolean
+                      description: Indicates if the processing was successful
+                      example: true
+                    data:
+                      type: object
+                      description: Processed exam data
+                      properties:
+                        id:
+                          type: string
+                          description: Unique ID of the processed exam
+                          example: "qcp84rvitjjafjur1mmmy6ka"
+                        status:
+                          type: string
+                          description: Processing status
+                          enum:
+                            ["pending", "in-progress", "completed", "failed"]
+                          example: "pending"
+                        metadata:
+                          type: object
+                          description: Exam metadata as sent in the request
+                          example:
+                            {
+                              "patient_id": "123456",
+                              "exam_type": "blood_test",
+                            }
+                        content:
+                          type: object
+                          description: Processed exam content
+                          example: {}
+                      required:
+                        - id
+                        - status
+                        - metadata
+                        - content
+                  required:
+                    - fileName
+                    - success
+                    - data
+        "400":
+          description: Invalid request
           content:
             application/json:
               schema:
@@ -823,7 +899,327 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: API under development
+                    description: Error message
+                    example: "Files are required"
+                  error:
+                    type: string
+                    description: Error type
+                    example: "Bad Request"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 400
+                required:
+                  - message
+                  - error
+                  - statusCode
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+                  statusCode:
+                    type: integer
+                    example: 401
+                required:
+                  - message
+                  - statusCode
+        "413":
+          description: File too large
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: "File size exceeds 25MB limit"
+                  error:
+                    type: string
+                    description: Error type
+                    example: "Payload Too Large"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 413
+                required:
+                  - message
+                  - error
+                  - statusCode
+  /exams/{EXAM_ID}:
+    get:
+      tags:
+        - Exams
+      summary: Get exam by ID
+      description: Returns the details of a specific exam, including the processed content with structured results.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: EXAM_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique exam ID
+          example: "rnq71oedacu1ieqmpc80yu3x"
+        - name: x-daai-professional-id
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Professional ID responsible for processing the exams
+      responses:
+        "200":
+          description: Exam found successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Unique exam ID
+                    example: "rnq71oedacu1ieqmpc80yu3x"
+                  status:
+                    type: string
+                    description: Processing status
+                    enum: ["pending", "in-progress", "completed", "failed"]
+                    example: "completed"
+                  metadata:
+                    type: object
+                    description: Exam metadata as sent in the request
+                    example:
+                      { "patient_id": "123456", "exam_type": "blood_test" }
+                  content:
+                    type: object
+                    description: |
+                      Processed exam content with flexible structure. The schema varies by exam type and may include:
+                      - `date`: Exam date
+                      - `tests`: Array with test results
+                      - `exam_type`: Type of exam
+                      - `patient_name`: Patient name
+                      - Other fields specific to the exam type
+                    properties:
+                      date:
+                        type: object
+                        description: Exam date
+                        properties:
+                          title:
+                            type: string
+                            example: "Exam Date"
+                          content:
+                            type: string
+                            example: "11/24/2017"
+                      tests:
+                        type: object
+                        description: Test results
+                        properties:
+                          title:
+                            type: string
+                            example: "Test Results"
+                          content:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                test_name:
+                                  type: object
+                                  properties:
+                                    title:
+                                      type: string
+                                      example: "Test Name"
+                                    content:
+                                      type: string
+                                      example: "Red Blood Cells"
+                                result:
+                                  type: object
+                                  properties:
+                                    title:
+                                      type: string
+                                      example: "Result"
+                                    content:
+                                      type: string
+                                      example: "4.24 million/mm3"
+                                numeric_result:
+                                  type: object
+                                  properties:
+                                    title:
+                                      type: string
+                                      example: "Numeric Result"
+                                    content:
+                                      type: string
+                                      example: "4.24 million/mm3"
+                                reference_value:
+                                  type: object
+                                  properties:
+                                    title:
+                                      type: string
+                                      example: "Reference Value"
+                                    content:
+                                      type: array
+                                      items:
+                                        type: string
+                                      example: ["3.90 to 5.03 million/mm3"]
+                                is_normal:
+                                  type: object
+                                  properties:
+                                    title:
+                                      type: string
+                                      example: "Within reference range"
+                                    content:
+                                      type: boolean
+                                      example: true
+                      exam_type:
+                        type: object
+                        description: Type of exam
+                        properties:
+                          title:
+                            type: string
+                            example: "Exam Type"
+                          content:
+                            type: string
+                            example: "Clinical Laboratory Test"
+                      patient_name:
+                        type: object
+                        description: Patient name
+                        properties:
+                          title:
+                            type: string
+                            example: "Patient Name"
+                          content:
+                            type: string
+                            example: "JOHN DOE"
+                    additionalProperties: true
+                required:
+                  - id
+                  - status
+                  - metadata
+                  - content
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+                  statusCode:
+                    type: integer
+                    example: 401
+                required:
+                  - message
+                  - statusCode
+        "404":
+          description: Exam not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Exam not found"
+                  error:
+                    type: string
+                    description: Error type
+                    example: "Not Found"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 404
+                required:
+                  - message
+                  - error
+                  - statusCode
+  /exams/{EXAM_ID}/events:
+    get:
+      tags:
+        - Exams
+      summary: Exam events
+      description: Server-Sent Events (SSE) endpoint to receive real-time updates about exam processing
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: EXAM_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique exam ID
+          example: "rnq71oedacu1ieqmpc80yu3x"
+        - name: x-daai-professional-id
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Professional ID responsible for processing the exams
+      responses:
+        "200":
+          description: Event stream established successfully
+          content:
+            text/event-stream:
+              schema:
+                type: object
+                properties:
+                  event:
+                    type: string
+                    description: Event type
+                    enum:
+                      - exam.pending
+                      - exam.processing
+                      - exam.completed
+                      - exam.failed
+                    example: exam.completed
+                required:
+                  - event
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+                  statusCode:
+                    type: integer
+                    example: 401
+                required:
+                  - message
+                  - statusCode
+        "404":
+          description: Exam not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Exam not found"
+                  error:
+                    type: string
+                    description: Error type
+                    example: "Not Found"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 404
+                required:
+                  - message
+                  - error
+                  - statusCode
   /summaries:
     post:
       tags:
