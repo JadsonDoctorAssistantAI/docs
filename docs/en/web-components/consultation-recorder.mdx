@@ -81,7 +81,7 @@ import '@doctorassistant/daai-component';
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `apiKey` | string | API key required to make requests |
+| `apikey` | string | API key required to make requests |
 | `professional` | string | Unique identifier of the professional who will use the component |
 
 ### Optional Properties
@@ -91,6 +91,7 @@ import '@doctorassistant/daai-component';
 | `specialty` | string | Defines the medical specialty for the record |
 | `metadata` | object | Additional data for webhook retrieval |
 | `telemedicine` | boolean | Enables telemedicine functionality |
+| `videoElement` | HTMLVideoElement | Reference to a custom HTML video element that will be used for capture during telemedicine consultation |
 | `hideTutorial` | boolean | Disables the telemedicine tutorial modal |
 | `maxRecordingTime` | number | Maximum recording time in seconds |
 | `warningRecordingTime` | number | Time in seconds before the limit for warning |
