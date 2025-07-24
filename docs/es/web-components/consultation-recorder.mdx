@@ -97,6 +97,96 @@ import '@doctorassistant/daai-component';
 | `warningRecordingTime` | number | Tiempo en segundos antes del límite para aviso |
 | `reportSchema` | object | Esquema personalizado del reporte, conforme especificación de la API. Permite definir instrucciones, schema y ejemplos para el reporte generado. |
 
+## Integración con Video para Telemedicina
+
+La propiedad `videoElement` permite que integres el componente con un elemento de video HTML personalizado para consultas de telemedicina. Esta funcionalidad es especialmente útil cuando ya tienes una estructura de videollamada implementada y deseas usar el audio de esa llamada como fuente para la grabación y transcripción.
+
+### Cómo Funciona
+
+Cuando proporcionas un `videoElement`, el componente utilizará el stream de audio de este elemento de video como fuente principal junto con el micrófono del dispositivo del profesional.
+
+### Implementación
+
+```jsx
+<body>
+  // Elemento de video que será pasado al componente
+  <video id="consultation-video" controls style="width: 100%; max-width: 600px; margin-bottom: 20px;">
+    <source src="./assets/test.mp4" type="video/mp4">
+    <p>Tu navegador no soporta videos HTML5.</p>
+  </video>
+
+  <daai-consultation-recorder
+    apikey="tu-api-key" 
+    professional="12345" 
+    telemedicine="true">
+  </daai-consultation-recorder>
+
+  <script>
+    // Espera la carga del DOM
+    document.addEventListener('DOMContentLoaded', function () {
+      const recorder = document.querySelector('daai-consultation-recorder');
+      const videoElement = document.getElementById('consultation-video');
+      // Pasa el elemento de video al componente
+      recorder.videoElement = videoElement;
+    });
+  </script>
+</body>
+
+```
+
+### Ejemplo Práctico con React
+
+```jsx
+import React, { useRef, useEffect } from 'react';
+import '@doctorassistant/daai-component';
+
+function ConsultaTelemedicina() {
+  const videoRef = useRef(null);
+  const recorderRef = useRef(null);
+  
+  useEffect(() => {
+    // Configurar el stream de video (ejemplo con WebRTC)
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then(stream => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      });
+    
+    // Configurar el componente de grabación
+    if (recorderRef.current && videoRef.current) {
+      recorderRef.current.videoElement = videoRef.current;
+    }
+  }, []);
+
+  return (
+    <div>
+      <video 
+        ref={videoRef} 
+        id="videollamada"
+        autoPlay 
+        muted 
+        width="640" 
+        height="480"
+      />
+      
+      <daai-consultation-recorder
+        ref={recorderRef}
+        apiKey="TU_API_KEY"
+        professional="ID_DEL_PROFESIONAL"
+        telemedicine={true}
+      />
+    </div>
+  );
+}
+```
+
+### Requisitos Técnicos
+
+- El elemento de video debe tener un stream activo (`srcObject` definido)
+- La propiedad `telemedicine` debe estar habilitada (`true`)
+- El stream debe contener al menos una pista de audio
+
 ## Eventos
 
 El componente emite los siguientes eventos que pueden ser capturados:
