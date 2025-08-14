@@ -84,7 +84,7 @@ Actualmente, los siguientes eventos pueden ser recibidos, organizados por contex
 
 ### Estrategias de Envío
 
-Al finalizar el procesamiento de un recurso, intentaremos enviar el webhook hasta 5 veces, utilizando intervalos exponenciales a partir de 5 segundos entre los intentos. En caso de que todos los intentos fallen y el webhook no sea integrado con éxito, realizaremos un nuevo intento de integración todos los días a las 22h, utilizando el mismo mecanismo de reenvío. Este proceso diario continuará hasta que el webhook sea integrado con éxito (o sea, hasta recibir una respuesta HTTP 2xx de tu endpoint).
+Al finalizar el procesamiento de un recurso, intentaremos enviar el webhook hasta 5 veces, utilizando intervalos exponenciales a partir de 5 segundos entre los intentos y con un timeout de 30 segundos. En caso de que todos los intentos fallen y el webhook no sea integrado con éxito, realizaremos un nuevo intento de integración todos los días a las 22h, utilizando el mismo mecanismo de reenvío. Este proceso diario continuará hasta que el webhook sea integrado con éxito (o sea, hasta recibir una respuesta HTTP 2xx de tu endpoint).
 
 ### Seguridad
 

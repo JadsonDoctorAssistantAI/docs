@@ -84,7 +84,7 @@ Currently, the following events can be received, organized by context:
 
 ### Sending Strategies
 
-When finishing processing a resource, we will try to send the webhook up to 5 times, using exponential intervals starting from 5 seconds between attempts. If all attempts fail and the webhook is not successfully integrated, we will make a new integration attempt every day at 10 PM, using the same resend mechanism. This daily process will continue until the webhook is successfully integrated (i.e., until we receive an HTTP 2xx response from your endpoint).
+When finishing processing a resource, we will try to send the webhook up to 5 times, using exponential intervals starting from 5 seconds between attempts and with a timeout of 30 seconds. If all attempts fail and the webhook is not successfully integrated, we will make a new integration attempt every day at 10 PM, using the same resend mechanism. This daily process will continue until the webhook is successfully integrated (i.e., until we receive an HTTP 2xx response from your endpoint).
 
 ### Security
 

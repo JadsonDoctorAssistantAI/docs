@@ -84,7 +84,7 @@ Atualmente, os seguintes eventos podem ser recebidos, organizados por contexto:
 
 ### Estratégias de Envio
 
-Ao finalizar o processamento de um recurso, tentaremos enviar o webhook até 5 vezes, utilizando intervalos exponenciais a partir de 5 segundos entre as tentativas. Caso todas as tentativas falhem e o webhook não seja integrado com sucesso, realizaremos uma nova tentativa de integração todos os dias às 22h, utilizando o mesmo mecanismo de reenvio. Esse processo diário continuará até que o webhook seja integrado com sucesso (ou seja, até recebermos uma resposta HTTP 2xx do seu endpoint).
+Ao finalizar o processamento de um recurso, tentaremos enviar o webhook até 5 vezes, utilizando intervalos exponenciais a partir de 5 segundos entre as tentativase com um timeout de 30 segundos. Caso todas as tentativas falhem e o webhook não seja integrado com sucesso, realizaremos uma nova tentativa de integração todos os dias às 22h, utilizando o mesmo mecanismo de reenvio. Esse processo diário continuará até que o webhook seja integrado com sucesso (ou seja, até recebermos uma resposta HTTP 2xx do seu endpoint).
 
 ### Segurança
 
