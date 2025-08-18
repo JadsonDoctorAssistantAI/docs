@@ -58,7 +58,7 @@ El payload enviado será siempre un JSON con la siguiente estructura:
 
 ```json
 {
-  "event": "CONSULTATION_SUCCESS", // string identificando el evento
+  "event": "CONSULTATION_SUCCESSFUL", // string identificando el evento
   "data": { /* contenido variable según el recurso */ },
   "error": {
     "message": "Descripción del error, si lo hay"
@@ -75,12 +75,12 @@ El payload enviado será siempre un JSON con la siguiente estructura:
 Actualmente, los siguientes eventos pueden ser recibidos, organizados por contexto:
 
 #### Consultas
-- `CONSULTATION_SUCCESS`: Consulta procesada con éxito.
-- `CONSULTATION_FAILED`: Ocurrió una falla al procesar la consulta.
+- `CONSULTATION_SUCCESSFUL`: Consulta procesada con éxito.
+- `CONSULTATION_FAIL`: Ocurrió una falla al procesar la consulta.
 
 #### Exámenes
-- `EXAM_SUCCESS`: Examen procesado con éxito.
-- `EXAM_FAILED`: Ocurrió una falla al procesar el examen.
+- `EXAM_SUCCESSFUL`: Examen procesado con éxito.
+- `EXAM_FAIL`: Ocurrió una falla al procesar el examen.
 
 ### Estrategias de Envío
 
