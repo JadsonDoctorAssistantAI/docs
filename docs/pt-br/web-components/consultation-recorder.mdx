@@ -96,6 +96,10 @@ import '@doctorassistant/daai-component';
 | `maxRecordingTime` | number | Tempo máximo de gravação em segundos |
 | `warningRecordingTime` | number | Tempo em segundos antes do limite para aviso |
 | `reportSchema` | object | Esquema customizado do relatório, conforme especificação da API. Permite definir instruções, schema e exemplos para o relatório gerado. |
+| `skipConsultationType` | boolean | Pula a seleção de tipo de consulta, levando em consideração a propriedade `telemedicine` e o `videoElement`. |
+{/* | `autoStart` | boolean | Inicia a gravação automaticamente, sem a necessidade de clicar no botão de iniciar. |
+| `finishEventName` | string | Nome do evento que irá finalizar a gravação. |
+| `autoFinishOnEvent` | boolean | Finaliza a gravação automaticamente quando o evento informado no `finishEventName` for emitido. | */}
 
 ## Integração com Vídeo para Telemedicina
 
@@ -376,3 +380,5 @@ Por exemplo:
   }'
 />
 ```
+
+##
