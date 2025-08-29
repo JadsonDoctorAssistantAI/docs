@@ -380,3 +380,61 @@ Por ejemplo:
   }'
 />
 ```
+
+## Deshabilitando la selección de tipo de consulta
+
+<Info>
+La funcionalidad de deshabilitación de la selección de tipo de consulta (`skipConsultationType`) está disponible como una funcionalidad de prueba en la versión **2.4.4-rc.1** del componente.
+</Info>
+
+Puedes deshabilitar la selección de tipo de consulta utilizando la propiedad `skipConsultationType`. Esto permite que el componente inicie la grabación automáticamente, sin la necesidad de seleccionar el tipo de consulta.
+
+- Si la propiedad `telemedicine` es `true`, el componente mostrará la caja de selección de pestañas del navegador para seleccionar la fuente de audio.
+
+```jsx
+<daai-consultation-recorder
+  apikey="TU_API_KEY"
+  professional="ID_DEL_PROFESIONAL"
+  telemedicine
+  skip-consultation-type
+/>
+```
+
+- Si la propiedad `videoElement` también es proporcionada, el componente usará el audio de este elemento como fuente principal.
+
+```jsx
+<body>
+  // Elemento de video que será pasado al componente
+  <video id="consultation-video" controls style="width: 100%; max-width: 600px; margin-bottom: 20px;">
+    <source src="./assets/test.mp4" type="video/mp4">
+    <p>Your browser does not support HTML5 videos.</p>
+  </video>
+
+  <daai-consultation-recorder
+    apikey="TU_API_KEY"
+    professional="ID_DEL_PROFESIONAL"
+    telemedicine
+    skip-consultation-type
+  />
+
+  <script>
+    // Espera la carga del DOM
+    document.addEventListener('DOMContentLoaded', function () {
+      const recorder = document.querySelector('daai-consultation-recorder');
+      const videoElement = document.getElementById('consultation-video');
+      // Pasa el elemento de video al componente
+      recorder.videoElement = videoElement;
+    });
+  </script>
+</body>
+```
+
+- Si no se proporciona ni `telemedicine` ni `videoElement`, el componente usará el audio del dispositivo del profesional como fuente principal. 
+
+```jsx
+<daai-consultation-recorder
+  apikey="TU_API_KEY"
+  professional="ID_DEL_PROFESIONAL"
+  skip-consultation-type
+/>
+```

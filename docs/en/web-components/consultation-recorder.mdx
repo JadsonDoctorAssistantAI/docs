@@ -380,3 +380,65 @@ For example:
   }'
 />
 ```
+
+## Disabling consultation type selection
+
+<Info>
+The consultation type selection disabling functionality (`skipConsultationType`) is available as a test feature in component version **2.4.4-rc.1**.
+</Info>
+
+You can disable the consultation type selection using the `skipConsultationType` property. This allows the component to start recording automatically, without the need to select the consultation type.
+
+- If the `telemedicine` property is `true`, the component will display the browser tab selection box for selecting the audio source.
+
+```jsx
+<daai-consultation-recorder
+  apikey="YOUR_API_KEY"
+  professional="PROFESSIONAL_ID"
+  telemedicine
+  skip-consultation-type
+/>
+```
+
+- If the `videoElement` property is also provided, the component will use the audio from this element as the primary source.
+
+```jsx
+<body>
+  // Video element that will be passed to the component
+  <video id="consultation-video" controls style="width: 100%; max-width: 600px; margin-bottom: 20px;">
+    <source src="./assets/test.mp4" type="video/mp4">
+    <p>Your browser does not support HTML5 videos.</p>
+  </video>
+
+  <daai-consultation-recorder
+    apikey="YOUR_API_KEY"
+    professional="PROFESSIONAL_ID"
+    telemedicine
+    skip-consultation-type
+  />
+
+  <script>
+    // Wait for DOM loading
+    document.addEventListener('DOMContentLoaded', function () {
+      const recorder = document.querySelector('daai-consultation-recorder');
+      const videoElement = document.getElementById('consultation-video');
+      // Pass the video element to the component
+      recorder.videoElement = videoElement;
+    });
+  </script>
+</body>
+```
+
+- If neither `telemedicine` nor `videoElement` is provided, the component will use the audio from the professional's device as the primary source.
+
+```jsx
+<daai-consultation-recorder
+  apikey="YOUR_API_KEY"
+  professional="PROFESSIONAL_ID"
+  skip-consultation-type
+/>
+```
+
+
+
+

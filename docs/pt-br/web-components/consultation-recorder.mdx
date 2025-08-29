@@ -381,4 +381,60 @@ Por exemplo:
 />
 ```
 
-##
+## Desabilitando a seleção de tipo de consulta
+
+<Info>
+A funcionalidade de desabilitar a seleção de tipo de consulta (`skipConsultationType`) está disponível em versão de teste na versão **2.4.4-rc.1** do componente.
+</Info>
+
+Você pode desabilitar a seleção de tipo de consulta utilizando a propriedade `skipConsultationType`. Isso permite que o componente ja inicie a gravação automaticamente, sem a necessidade de selecionar o tipo de consulta.
+
+- Caso a propriedade `telemedicine` seja `true`, o componente irá exibir a caixa de seleção aba do navegador para a seleção da fonte de áudio. 
+
+```jsx
+<daai-consultation-recorder
+  apikey="SUA_API_KEY"
+  professional="ID_DO_PROFISSIONAL"
+  telemedicine
+  skip-consultation-type
+/>
+```
+
+- Caso também seja informado um `videoElement`, o componente irá usar o áudio deste elemento como fonte de áudio diretamente.
+
+```jsx
+<body>
+  // Elemento de vídeo que será passado para o componente
+  <video id="consultation-video" controls style="width: 100%; max-width: 600px; margin-bottom: 20px;">
+    <source src="./assets/test.mp4" type="video/mp4">
+    <p>Seu navegador não suporta vídeos HTML5.</p>
+  </video>
+
+  <daai-consultation-recorder
+    apikey="SUA_API_KEY"
+    professional="ID_DO_PROFISSIONAL"
+    telemedicine
+    skip-consultation-type
+  />
+
+  <script>
+    // Aguarda o carregamento do DOM
+    document.addEventListener('DOMContentLoaded', function () {
+      const recorder = document.querySelector('daai-consultation-recorder');
+      const videoElement = document.getElementById('consultation-video');
+      // Passa o elemento de vídeo para o componente
+      recorder.videoElement = videoElement;
+    });
+  </script>
+</body>
+```
+  
+- Caso não seja informado nem `telemedicine` nem `videoElement`, o componente irá usar o áudio do dispositivo do profissional como fonte de áudio apenas.
+
+```jsx
+<daai-consultation-recorder
+  apikey="SUA_API_KEY"
+  professional="ID_DO_PROFISSIONAL"
+  skip-consultation-type
+/>
+```
