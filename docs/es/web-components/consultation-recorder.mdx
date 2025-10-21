@@ -438,3 +438,25 @@ Puedes deshabilitar la selección de tipo de consulta utilizando la propiedad `s
   skip-consultation-type
 />
 ```
+
+## Enviando datos para prescripción
+
+El componente puede ser configurado para enviar datos para prescripción utilizando la propiedad `prescription-data`. Esto permite que se envíen datos adicionales para que la prescripción se genere basado en los datos enviados.
+
+<Info>
+La funcionalidad de envío de datos para prescripción (`prescription-data`) está disponible para prueba a partir de la versión **2.5.0-rc.1** del componente.
+</Info>
+
+### Mevo
+
+Para la plataforma MEVO, debe enviar los siguientes datos:
+- `provider`: "MEVO"
+- `externalReference`: Identificador único del paciente en el sistema de la plataforma MEVO
+
+```jsx
+<daai-consultation-recorder
+  apikey="TU_API_KEY"
+  professional="ID_DEL_PROFESIONAL"
+  prescription-data='{"provider": "MEVO", "externalReference": "ID_DEL_PACIENTE"}'
+/>
+```

@@ -439,6 +439,24 @@ You can disable the consultation type selection using the `skipConsultationType`
 />
 ```
 
+## Sending data for prescription
 
+The component can be configured to send data for prescription using the `prescription-data` property. This allows you to send additional data so that the prescription is generated based on the sent data.
 
+<Info>
+The prescription data sending functionality (`prescription-data`) is available for test from component version **2.5.0-rc.1**.
+</Info>
 
+### Mevo
+
+For the MEVO platform, you must send the following data:
+- `provider`: "MEVO"
+- `externalReference`: Unique identifier of the patient in the MEVO system
+
+```jsx
+<daai-consultation-recorder
+  apikey="YOUR_API_KEY"
+  professional="PROFESSIONAL_ID"
+  prescription-data='{"provider": "MEVO", "externalReference": "PATIENT_ID"}'
+/>
+```
