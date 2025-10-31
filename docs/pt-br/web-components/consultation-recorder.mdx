@@ -451,12 +451,12 @@ A funcionalidade de envio de dados para prescrição médica (`prescription-data
 
 Para a plataforma MEVO, você deve enviar os seguintes dados:
 - `provider`: "MEVO"
-- `externalReference`: Identificador único do paciente no sistema da plataforma MEVO
+- `externalReference`: Identificador único na plataforma MEVO
 
 ```jsx
 <daai-consultation-recorder
   apikey="SUA_API_KEY"
   professional="ID_DO_PROFISSIONAL"
-  prescription-data='{"provider": "MEVO", "externalReference": "ID_DO_PACIENTE"}'
+  prescription-data='{"provider": "MEVO", "externalReference": "IDENTIFICADOR_UNICO"}'
 />
 ```
