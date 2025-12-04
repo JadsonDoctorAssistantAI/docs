@@ -460,3 +460,29 @@ For the MEVO platform, you must send the following data:
   prescription-data='{"provider": "MEVO", "externalReference": "UNIQUE_IDENTIFIER"}'
 />
 ```
+
+### Memed
+
+<Info>
+The prescription data sending functionality for the Memed platform (`prescription-data`) is available for test from component version **2.6.0-rc.0**.
+</Info>
+
+For the Memed platform, you must send the following data:
+- `provider`: "MEMED"
+- `token`: Authentication token for the Memed platform for the professional
+- `patient`: That is an object with the following fields:
+  - `externalId`: Unique identifier of the patient in the Memed platform
+  - `name`: Name of the patient
+  - `email`: Email of the patient
+  - `phone`: Phone of the patient
+  - `document`: Document of the patient (only numbers - optional)
+
+```jsx
+<daai-consultation-recorder
+  apikey="YOUR_API_KEY"
+  professional="PROFESSIONAL_ID"
+  prescription-data='{"provider": "MEMED", "token": "AUTHENTICATION_TOKEN", "patient": {"externalId": "UNIQUE_IDENTIFIER", "name": "PATIENT_NAME", "email": "PATIENT_EMAIL", "phone": "PATIENT_PHONE", "document": "PATIENT_DOCUMENT"}}'
+/>
+```
+
+When the recording is finished, the component will send the data to the prescription medical sdk of Memed, which will generate the prescription medical based on the data resulting from the recording.

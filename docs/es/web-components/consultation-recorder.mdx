@@ -460,3 +460,29 @@ Para la plataforma MEVO, debe enviar los siguientes datos:
   prescription-data='{"provider": "MEVO", "externalReference": "IDENTIFICADOR_UNICO"}'
 />
 ```
+
+### Memed
+
+<Info>
+La funcionalidad de envío de datos para prescripción para la plataforma Memed (`prescription-data`) está disponible para prueba a partir de la versión **2.6.0-rc.0** del componente.
+</Info>
+
+Para la plataforma Memed, debe enviar los siguientes datos:
+- `provider`: "MEMED"
+- `token`: Token de autenticación de la plataforma Memed para el profesional
+- `patient`: Que es un objeto con los siguientes campos:
+  - `externalId`: Identificador único del paciente en la plataforma Memed
+  - `name`: Nombre del paciente
+  - `email`: Email del paciente
+  - `phone`: Teléfono del paciente
+  - `document`: Documento del paciente (sólo números - opcional)
+
+```jsx
+<daai-consultation-recorder
+  apikey="TU_API_KEY"
+  professional="ID_DEL_PROFESIONAL"
+  prescription-data='{"provider": "MEMED", "token": "TOKEN_DE_AUTENTICACION", "patient": {"externalId": "IDENTIFICADOR_UNICO", "name": "NOMBRE_DEL_PACIENTE", "email": "EMAIL_DEL_PACIENTE", "phone": "TELEFONO_DEL_PACIENTE", "document": "DOCUMENTO_DEL_PACIENTE"}}'
+/>
+```
+
+Al finalizar la grabación, el componente enviará los datos para la prescripción médica de la o sdk de prescripción médica de Memed, que generará la prescripción médica con base en los datos resultantes de la grabación.
